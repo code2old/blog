@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Linux命令详解-netcatnetcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。 常用netcat命令示例1. 端口扫描netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞 1$nc -z -v -n 192.168.63.35 21-25 这个命令会打印21-25">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux-nc命令详解">
+<meta property="og:url" content="http://yoursite.com/2020/08/04/linux-nc/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="Linux命令详解-netcatnetcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。 常用netcat命令示例1. 端口扫描netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞 1$nc -z -v -n 192.168.63.35 21-25 这个命令会打印21-25">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-04T15:25:42.796Z">
+<meta property="article:modified_time" content="2020-08-04T15:25:42.801Z">
+<meta property="article:author" content="江湖渔民">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/04/linux-nc/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux-nc命令详解 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/linux-nc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux-nc命令详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-04 23:25:42" itemprop="dateCreated datePublished" datetime="2020-08-04T23:25:42+08:00">2020-08-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">Linux命令详解</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Linux命令详解-netcat"><a href="#Linux命令详解-netcat" class="headerlink" title="Linux命令详解-netcat"></a>Linux命令详解-netcat</h3><p>netcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。</p>
+<h4 id="常用netcat命令示例"><a href="#常用netcat命令示例" class="headerlink" title="常用netcat命令示例"></a>常用netcat命令示例</h4><h5 id="1-端口扫描"><a href="#1-端口扫描" class="headerlink" title="1. 端口扫描"></a>1. 端口扫描</h5><p>netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">nc -z -v -n 192.168.63.35 21-25</span></span><br></pre></td></tr></table></figure>
+<p>这个命令会打印21-25所有开放的端口信息，默认为TCP模式（-u可调整为UDP模式）。<br>-z 表示0 IO，即连接成功后马上关闭连接，不进行数据交换<br>-v 表示详细输出<br>-n 表示netcat不使用DNS反向查询IP地址的域名</p>
+<h5 id="2-文件传输"><a href="#2-文件传输" class="headerlink" title="2. 文件传输"></a>2. 文件传输</h5><p>Linux中有很多工具可以进行文件的网络传输，比如：FTP、Samba和scp等工具，但是ftp、samba都需要安装配置，而在一些嵌入式设备中，根本不支持scp命令。在这种情况下，可以使用netcat命令作为传输文件的桥梁进行跨机器的文件传输。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &lt; file.txt            <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 &gt; file.txt   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令在A机器上创建了一个文件服务器，并且将文件file.txt重定向到netcat，当客户端连接到该端口时，netcat会向客户端发送file.txt的内容。而客户端B会将接收到的文件内容重定向file.txt。</p>
+<p>也可以在A机器上创建文件服务器，等待客户端的连接和发送数据，并将netcat结果重定向到文件中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A&lt;---B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &gt; file.txt             <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 &lt; file.txt  <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-目录传输"><a href="#3-目录传输" class="headerlink" title="3. 目录传输"></a>3. 目录传输</h5><p>发送整个目录或者多个文件时，和发送单个文件的方式原理差不多，只不过需要使用压缩工具tar工具，然后再进行重定向即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | nc -l 8000           <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | tar -xvf -     <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在A服务器上创建了一个tar的归档包并将它重定向到netcat服务器，客户端连接到服务器时，服务器便将归档数据发送给客户端，客户端netcat收到数据后再重定向到tar工具。</p>
+<p>如果想要节省带宽，可以通过压缩工具压缩后再进行发送</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | bzip2 -z | nc -l 8000         <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | bzip2 -d | tar -xvf -   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>使用tar归档和bzip2压缩和解压</p>
+<h5 id="4-网络加密传输"><a href="#4-网络加密传输" class="headerlink" title="4. 网络加密传输"></a>4. 网络加密传输</h5><p>在发送数据之前，可以使用mcrypt工具保证数据安全</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mcrypt --flush --bare -F -q -d -m ecb &gt; file.txt    <span class="comment"># 客户端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mcrypt --flush --bare -F -q -m ecb &lt; file.txt | nc -l 8000   <span class="comment">#服务端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>以上两个命令都需要输入密码，而且两端使用相同的密码。这里使用mcrypt工具进行加解密，使用其他加解密工具也可以的。</p>
+<p>（加密工具的用法测试的时候失败了，没有错误的打印，但是客户端输出的文件里面是空的，有知道原因的小伙伴可以交流一下）</p>
+<h5 id="5-视频流"><a href="#5-视频流" class="headerlink" title="5. 视频流"></a>5. 视频流</h5><p>个人觉得用netcat发送视频流不是一个好的方法，linux上用于收发视频流的工具很多，这里只是介绍netcat发送视频流的用法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat video.mp4 | nc -l 8000</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mplayer -vo x11 -cache 3000 -</span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令netcat从socket中读取数据并重定向到mplayer中</p>
+<h5 id="6-克隆一个设备"><a href="#6-克隆一个设备" class="headerlink" title="6. 克隆一个设备"></a>6. 克隆一个设备</h5><p>如果已经安装配置一台Linux机器并且需要对其他的机器进行同样的操作，只需要启动另一台机器的一些引导就可以克隆机器。假如系统在磁盘/dev/sda上，克隆Linux PC的操作如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dd <span class="keyword">if</span>=/dev/sda | nc -l 8000            <span class="comment"># server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 | dd of=/dev/sda   <span class="comment"># client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>dd是一个从磁盘读取原始数据的工具，通过netcat服务器重定向它的输出流到其他机器并且写入到磁盘中，它会随着分区表拷贝所有的信息。但是如果已经做过分区并且只需要克隆root分区，我们可以根据我们系统root分区的位置，更改sda 为sda1，sda2.等等。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/04/1-basic/" rel="prev" title="汇编语言-基础知识">
+      <i class="fa fa-chevron-left"></i> 汇编语言-基础知识
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux命令详解-netcat"><span class="nav-number">1.</span> <span class="nav-text">Linux命令详解-netcat</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用netcat命令示例"><span class="nav-number">1.1.</span> <span class="nav-text">常用netcat命令示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-端口扫描"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-文件传输"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 文件传输</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-目录传输"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 目录传输</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-网络加密传输"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 网络加密传输</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-视频流"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. 视频流</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-克隆一个设备"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. 克隆一个设备</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">江湖渔民</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/code2old" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;code2old" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1814593561@qq.com" title="E-Mail → mailto:1814593561@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江湖渔民</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

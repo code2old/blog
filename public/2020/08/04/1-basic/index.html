@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第一章 基础知识1.1 机器语言机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。 1.2 汇编语言的产生汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。 123操作：寄存器BX的内容送到AX中机器指">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言-基础知识">
+<meta property="og:url" content="http://yoursite.com/2020/08/04/1-basic/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="第一章 基础知识1.1 机器语言机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。 1.2 汇编语言的产生汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。 123操作：寄存器BX的内容送到AX中机器指">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-04T13:59:24.975Z">
+<meta property="article:modified_time" content="2020-08-04T13:59:24.980Z">
+<meta property="article:author" content="江湖渔民">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/04/1-basic/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>汇编语言-基础知识 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/1-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          汇编语言-基础知识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-04 21:59:24" itemprop="dateCreated datePublished" datetime="2020-08-04T21:59:24+08:00">2020-08-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="第一章-基础知识"><a href="#第一章-基础知识" class="headerlink" title="第一章 基础知识"></a>第一章 基础知识</h3><h4 id="1-1-机器语言"><a href="#1-1-机器语言" class="headerlink" title="1.1 机器语言"></a>1.1 机器语言</h4><p>机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。</p>
+<h4 id="1-2-汇编语言的产生"><a href="#1-2-汇编语言的产生" class="headerlink" title="1.2 汇编语言的产生"></a>1.2 汇编语言的产生</h4><p>汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">操作：寄存器BX的内容送到AX中</span><br><span class="line">机器指令：1000100111011000</span><br><span class="line">汇编指令：mov ax, bx</span><br></pre></td></tr></table></figure>
+<p>将汇编指令转换成机器指令的翻译程序就被称为编译器。</p>
+<h4 id="1-3-汇编语言的组成"><a href="#1-3-汇编语言的组成" class="headerlink" title="1.3 汇编语言的组成"></a>1.3 汇编语言的组成</h4><p>汇编语言由以下3类指令组成：</p>
+<ul>
+<li>汇编指令：机器码的助记符，有对应的机器码</li>
+<li>伪指令：没有对应的机器码，由编译器执行，计算机并不执行</li>
+<li>其他符号：如+、-、*、/等，由编译器识别，没有对应的机器码。<br>汇编语言的核心是机器指令，它决定了汇编语言的特性</li>
+</ul>
+<h4 id="1-4-存储器"><a href="#1-4-存储器" class="headerlink" title="1.4 存储器"></a>1.4 存储器</h4><p>CPU是计算机的核心部件，它控制整个计算机的运作并进行运算。指令和数据在存储器中存放。学习汇编首先要了解CPU是如何从内存中读取信息，以及向内存中写入信息的。</p>
+<h4 id="1-5-指令和数据"><a href="#1-5-指令和数据" class="headerlink" title="1.5 指令和数据"></a>1.5 指令和数据</h4><p>指令和数据都是应用上的概念。在内存和磁盘中指令和数据没有任何区别，都是二进制信息。</p>
+<h4 id="1-6-存储单元"><a href="#1-6-存储单元" class="headerlink" title="1.6 存储单元"></a>1.6 存储单元</h4><p>存储器被划分为若干个存储单元，每个存储单元从0开始顺序编号。电子计算机的最小信息单位是bit，微机存储器的容量是以字节为最小单位来计算的。</p>
+<h4 id="1-7-CPU对存储器的读写"><a href="#1-7-CPU对存储器的读写" class="headerlink" title="1.7 CPU对存储器的读写"></a>1.7 CPU对存储器的读写</h4><p>CPU要想进行数据的读写，必须和外部器件进行3类信息交换：</p>
+<ul>
+<li>存储单元的地址（地址信息）</li>
+<li>器件的选择，读或写的命令（控制信息）</li>
+<li>读或写的书写（数据信息）<br>计算机中专门连接CPU和其他芯片的导线被称为总线，从逻辑上将分为3类：地址总线、控制总线和数据总线</li>
+</ul>
+<h4 id="1-8-地址总线"><a href="#1-8-地址总线" class="headerlink" title="1.8 地址总线"></a>1.8 地址总线</h4><p>CPU是通过地址总线来指定存储单元的。地址总线上能传送多少个不同的信息，CPU就可以对多少个存储单元进行寻址。一个CPU有N跟地址总线，则这个CPU的地址总线宽度为N。这样CPU最多可以对2^N个内存单元进行寻址</p>
+<h4 id="1-9-数据总线"><a href="#1-9-数据总线" class="headerlink" title="1.9 数据总线"></a>1.9 数据总线</h4><p>CPU通过数据总线与其它器件进行数据交互。总线宽度决定了CPU与外界的数据传送速度。8088CPU数据总线宽度为8，一次可传送一个字节，8086CPU的数据总线宽度为16，一次可传送2个字节。</p>
+<h4 id="1-10-控制总线"><a href="#1-10-控制总线" class="headerlink" title="1.10 控制总线"></a>1.10 控制总线</h4><p>CPU通过控制总线对外部器件进行控制，控制总线的宽度决定了CPU对外部器件的控制能力。</p>
+<h4 id="1-11-内存地址空间概述"><a href="#1-11-内存地址空间概述" class="headerlink" title="1.11 内存地址空间概述"></a>1.11 内存地址空间概述</h4><h5 id="1-11-1-主板"><a href="#1-11-1-主板" class="headerlink" title="1.11.1 主板"></a>1.11.1 主板</h5><h5 id="1-11-2-接口卡"><a href="#1-11-2-接口卡" class="headerlink" title="1.11.2 接口卡"></a>1.11.2 接口卡</h5><p>CPU通过总线向接口卡发送命令，接口卡根据CPU的命令控制外设进行工作</p>
+<h4 id="1-12-各类存储器芯片"><a href="#1-12-各类存储器芯片" class="headerlink" title="1.12 各类存储器芯片"></a>1.12 各类存储器芯片</h4><p>存储器从读写属性上分为两类：随机存储器（RAM）和只读存储器（ROM）。随机存储器可读可写，但必须带电存储，断电后存储内容丢失；只读存储器只能读取不能写，断电后内容不丢失。存储器从功能和连接上又分为以下几类：</p>
+<ul>
+<li>随机存储器</li>
+<li>装有BIOS（Basic Input/Output System）的ROM</li>
+<li>接口卡上的RAM</li>
+</ul>
+<h4 id="1-13-内存地址空间"><a href="#1-13-内存地址空间" class="headerlink" title="1.13 内存地址空间"></a>1.13 内存地址空间</h4><p>所有物理存储器被看作一个由若干存储单元组成的逻辑存储器，每个物理存储器在这个逻辑存储器中占有一个地址段，即一段地址空间。8086CPU的地址总线宽度为20，可以定位2^20(1M)的内存单元，80386地址总线宽度为32，最大寻址空间为4G。8086地址空间分配基本情况如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">00000 |————————————————————|</span><br><span class="line">      |   主存储器地址空间  |</span><br><span class="line">      |      (RAM)         |</span><br><span class="line">9FFFF |____________________|</span><br><span class="line">A0000 |                    |</span><br><span class="line">      |    显存地址空间     |</span><br><span class="line">BFFFF |____________________|</span><br><span class="line">C0000 |                    |</span><br><span class="line">      |   各类ROM地址空间   | </span><br><span class="line">FFFFF |____________________|</span><br></pre></td></tr></table></figure>
+
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
+<li>汇编指令是机器指令的助记符，同机器指令一一对应</li>
+<li>每一种CPU都有自己的汇编指令集</li>
+<li>CPU直接使用的信息存放在存储器中</li>
+<li>在存储中指令和数据没有任何区别，都是二进制信息</li>
+<li>存储单元从0开始顺序编号</li>
+<li>一个存储单元可以存储8个bit，即8位二进制数</li>
+<li>1B=8b 1KB=1024B 1MB=1024KB 1GB=1024MB</li>
+<li>每一个CPU芯片都有许多管脚，这些管脚和总线相连。一个CPU可以引出三种总线的宽度标志了这个CPU不同方面的性能：<ul>
+<li>地址总线的宽度决定了CPU的寻址能力</li>
+<li>数据总线的宽度决定了CPU与其它器件进行数据传输的一次数据传输量</li>
+<li>控制总线的宽度决定了CPU对系统中其它器件的控制能力</li>
+</ul>
+</li>
+</ul>
+<p>对CPU来讲，系统中的所有存储器中的存储单元都处于一个统一的逻辑存储器中，它的容量受CPU寻址能力的限制。这个逻辑存储器即是我们所说的内存地址空间。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/04/2-register(CPU)/" rel="prev" title="汇编语言-寄存器（CPU工作原理）">
+      <i class="fa fa-chevron-left"></i> 汇编语言-寄存器（CPU工作原理）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/04/linux-nc/" rel="next" title="Linux-nc命令详解">
+      Linux-nc命令详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-基础知识"><span class="nav-number">1.</span> <span class="nav-text">第一章 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-机器语言"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 机器语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-汇编语言的产生"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 汇编语言的产生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-汇编语言的组成"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 汇编语言的组成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-存储器"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-指令和数据"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 指令和数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-存储单元"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 存储单元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-CPU对存储器的读写"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 CPU对存储器的读写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-8-地址总线"><span class="nav-number">1.8.</span> <span class="nav-text">1.8 地址总线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-9-数据总线"><span class="nav-number">1.9.</span> <span class="nav-text">1.9 数据总线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-10-控制总线"><span class="nav-number">1.10.</span> <span class="nav-text">1.10 控制总线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-11-内存地址空间概述"><span class="nav-number">1.11.</span> <span class="nav-text">1.11 内存地址空间概述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-11-1-主板"><span class="nav-number">1.11.1.</span> <span class="nav-text">1.11.1 主板</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-11-2-接口卡"><span class="nav-number">1.11.2.</span> <span class="nav-text">1.11.2 接口卡</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-12-各类存储器芯片"><span class="nav-number">1.12.</span> <span class="nav-text">1.12 各类存储器芯片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-13-内存地址空间"><span class="nav-number">1.13.</span> <span class="nav-text">1.13 内存地址空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">1.14.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">江湖渔民</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/code2old" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;code2old" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1814593561@qq.com" title="E-Mail → mailto:1814593561@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江湖渔民</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
