@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Linux命令详解-netcatnetcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。 常用netcat命令示例1. 端口扫描netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞 1$nc -z -v -n 192.168.63.35 21-25 这个命令会打印21-25">
+  <meta name="description" content="Linux命令详解-netcatnetcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。以下是常用nc命令的示例 端口扫描netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞 1$nc -z -v -n 192.168.63.35 21-25 这个命令会打印21-25所有开">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux-nc命令详解">
-<meta property="og:url" content="http://yoursite.com/2020/08/04/linux-nc/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/08/11/linux-nc/index.html">
 <meta property="og:site_name" content="个人博客">
-<meta property="og:description" content="Linux命令详解-netcatnetcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。 常用netcat命令示例1. 端口扫描netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞 1$nc -z -v -n 192.168.63.35 21-25 这个命令会打印21-25">
+<meta property="og:description" content="Linux命令详解-netcatnetcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。以下是常用nc命令的示例 端口扫描netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞 1$nc -z -v -n 192.168.63.35 21-25 这个命令会打印21-25所有开">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-08-04T15:25:42.796Z">
-<meta property="article:modified_time" content="2020-08-04T15:25:42.801Z">
+<meta property="article:published_time" content="2020-08-11T14:34:12.419Z">
+<meta property="article:modified_time" content="2020-08-10T12:00:00.000Z">
 <meta property="article:author" content="江湖渔民">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/04/linux-nc/">
+<link rel="canonical" href="http://yoursite.com/2020/08/11/linux-nc/">
 
 
 <script id="page-configurations">
@@ -166,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/linux-nc/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/linux-nc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -189,8 +189,15 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-04 23:25:42" itemprop="dateCreated datePublished" datetime="2020-08-04T23:25:42+08:00">2020-08-04</time>
+              <time title="Created: 2020-08-11 22:34:12" itemprop="dateCreated datePublished" datetime="2020-08-11T22:34:12+08:00">2020-08-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-10 20:00:00" itemprop="dateModified" datetime="2020-08-10T20:00:00+08:00">2020-08-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -212,18 +219,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="Linux命令详解-netcat"><a href="#Linux命令详解-netcat" class="headerlink" title="Linux命令详解-netcat"></a>Linux命令详解-netcat</h3><p>netcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。</p>
-<h4 id="常用netcat命令示例"><a href="#常用netcat命令示例" class="headerlink" title="常用netcat命令示例"></a>常用netcat命令示例</h4><h5 id="1-端口扫描"><a href="#1-端口扫描" class="headerlink" title="1. 端口扫描"></a>1. 端口扫描</h5><p>netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞</p>
+        <h3 id="Linux命令详解-netcat"><a href="#Linux命令详解-netcat" class="headerlink" title="Linux命令详解-netcat"></a>Linux命令详解-netcat</h3><p>netcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。以下是常用nc命令的示例</p>
+<h4 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h4><p>netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">nc -z -v -n 192.168.63.35 21-25</span></span><br></pre></td></tr></table></figure>
 <p>这个命令会打印21-25所有开放的端口信息，默认为TCP模式（-u可调整为UDP模式）。<br>-z 表示0 IO，即连接成功后马上关闭连接，不进行数据交换<br>-v 表示详细输出<br>-n 表示netcat不使用DNS反向查询IP地址的域名</p>
-<h5 id="2-文件传输"><a href="#2-文件传输" class="headerlink" title="2. 文件传输"></a>2. 文件传输</h5><p>Linux中有很多工具可以进行文件的网络传输，比如：FTP、Samba和scp等工具，但是ftp、samba都需要安装配置，而在一些嵌入式设备中，根本不支持scp命令。在这种情况下，可以使用netcat命令作为传输文件的桥梁进行跨机器的文件传输。</p>
+<h4 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h4><p>Linux中有很多工具可以进行文件的网络传输，比如：FTP、Samba和scp等工具，但是ftp、samba都需要安装配置，而在一些嵌入式设备中，根本不支持scp命令。在这种情况下，可以使用netcat命令作为传输文件的桥梁进行跨机器的文件传输。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &lt; file.txt            <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 &gt; file.txt   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
 
 <p>以上命令在A机器上创建了一个文件服务器，并且将文件file.txt重定向到netcat，当客户端连接到该端口时，netcat会向客户端发送file.txt的内容。而客户端B会将接收到的文件内容重定向file.txt。</p>
 <p>也可以在A机器上创建文件服务器，等待客户端的连接和发送数据，并将netcat结果重定向到文件中。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A&lt;---B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &gt; file.txt             <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 &lt; file.txt  <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
 
-<h5 id="3-目录传输"><a href="#3-目录传输" class="headerlink" title="3. 目录传输"></a>3. 目录传输</h5><p>发送整个目录或者多个文件时，和发送单个文件的方式原理差不多，只不过需要使用压缩工具tar工具，然后再进行重定向即可。</p>
+<h4 id="目录传输"><a href="#目录传输" class="headerlink" title="目录传输"></a>目录传输</h4><p>发送整个目录或者多个文件时，和发送单个文件的方式原理差不多，只不过需要使用压缩工具tar工具，然后再进行重定向即可。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | nc -l 8000           <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | tar -xvf -     <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
 
 <p>在A服务器上创建了一个tar的归档包并将它重定向到netcat服务器，客户端连接到服务器时，服务器便将归档数据发送给客户端，客户端netcat收到数据后再重定向到tar工具。</p>
@@ -231,19 +238,24 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | bzip2 -z | nc -l 8000         <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | bzip2 -d | tar -xvf -   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
 
 <p>使用tar归档和bzip2压缩和解压</p>
-<h5 id="4-网络加密传输"><a href="#4-网络加密传输" class="headerlink" title="4. 网络加密传输"></a>4. 网络加密传输</h5><p>在发送数据之前，可以使用mcrypt工具保证数据安全</p>
+<h4 id="网络加密传输"><a href="#网络加密传输" class="headerlink" title="网络加密传输"></a>网络加密传输</h4><p>在发送数据之前，可以使用mcrypt工具保证数据安全</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mcrypt --flush --bare -F -q -d -m ecb &gt; file.txt    <span class="comment"># 客户端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mcrypt --flush --bare -F -q -m ecb &lt; file.txt | nc -l 8000   <span class="comment">#服务端</span></span></span><br></pre></td></tr></table></figure>
 
 <p>以上两个命令都需要输入密码，而且两端使用相同的密码。这里使用mcrypt工具进行加解密，使用其他加解密工具也可以的。</p>
 <p>（加密工具的用法测试的时候失败了，没有错误的打印，但是客户端输出的文件里面是空的，有知道原因的小伙伴可以交流一下）</p>
-<h5 id="5-视频流"><a href="#5-视频流" class="headerlink" title="5. 视频流"></a>5. 视频流</h5><p>个人觉得用netcat发送视频流不是一个好的方法，linux上用于收发视频流的工具很多，这里只是介绍netcat发送视频流的用法</p>
+<h4 id="视频流"><a href="#视频流" class="headerlink" title="视频流"></a>视频流</h4><p>个人觉得用netcat发送视频流不是一个好的方法，linux上用于收发视频流的工具很多，这里只是介绍netcat发送视频流的用法</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat video.mp4 | nc -l 8000</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mplayer -vo x11 -cache 3000 -</span></span><br></pre></td></tr></table></figure>
 
 <p>以上命令netcat从socket中读取数据并重定向到mplayer中</p>
-<h5 id="6-克隆一个设备"><a href="#6-克隆一个设备" class="headerlink" title="6. 克隆一个设备"></a>6. 克隆一个设备</h5><p>如果已经安装配置一台Linux机器并且需要对其他的机器进行同样的操作，只需要启动另一台机器的一些引导就可以克隆机器。假如系统在磁盘/dev/sda上，克隆Linux PC的操作如下</p>
+<h4 id="克隆一个设备"><a href="#克隆一个设备" class="headerlink" title="克隆一个设备"></a>克隆一个设备</h4><p>如果已经安装配置一台Linux机器并且需要对其他的机器进行同样的操作，只需要启动另一台机器的一些引导就可以克隆机器。假如系统在磁盘/dev/sda上，克隆Linux PC的操作如下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dd <span class="keyword">if</span>=/dev/sda | nc -l 8000            <span class="comment"># server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 | dd of=/dev/sda   <span class="comment"># client端</span></span></span><br></pre></td></tr></table></figure>
 
 <p>dd是一个从磁盘读取原始数据的工具，通过netcat服务器重定向它的输出流到其他机器并且写入到磁盘中，它会随着分区表拷贝所有的信息。但是如果已经做过分区并且只需要克隆root分区，我们可以根据我们系统root分区的位置，更改sda 为sda1，sda2.等等。</p>
+<h4 id="打开一个shell"><a href="#打开一个shell" class="headerlink" title="打开一个shell"></a>打开一个shell</h4><p>如果没有安装telnet或ssh，可以使用netcat创建远程shell</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ nc -v -c /bin/bash -lp 8000</span><br><span class="line">$ nc -v 192.168.63.35 8000</span><br></pre></td></tr></table></figure>
+
+<h4 id="nc常用参数选项"><a href="#nc常用参数选项" class="headerlink" title="nc常用参数选项"></a>nc常用参数选项</h4><p>nc -h查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[v1.10-41.1]</span><br><span class="line">connect to somewhere:   nc [-options] hostname port[s] [ports] ... </span><br><span class="line">listen for inbound:     nc -l -p port [-options] [hostname] [port]</span><br><span class="line">options:</span><br><span class="line">        -c shell commands       as &#96;-e&#39;; use &#x2F;bin&#x2F;sh to exec [dangerous!!]</span><br><span class="line">        -e filename             program to exec after connect [dangerous!!]</span><br><span class="line">        -b                      allow broadcasts</span><br><span class="line">        -g gateway              source-routing hop point[s], up to 8</span><br><span class="line">        -G num                  source-routing pointer: 4, 8, 12, ...</span><br><span class="line">        -h                      this cruft</span><br><span class="line">        -i secs                 delay interval for lines sent, ports scanned</span><br><span class="line">        -k                      set keepalive option on socket</span><br><span class="line">        -l                      listen mode, for inbound connects</span><br><span class="line">        -n                      numeric-only IP addresses, no DNS</span><br><span class="line">        -o file                 hex dump of traffic</span><br><span class="line">        -p port                 local port number</span><br><span class="line">        -r                      randomize local and remote ports</span><br><span class="line">        -q secs                 quit after EOF on stdin and delay of secs</span><br><span class="line">        -s addr                 local source address</span><br><span class="line">        -T tos                  set Type Of Service</span><br><span class="line">        -t                      answer TELNET negotiation</span><br><span class="line">        -u                      UDP mode</span><br><span class="line">        -v                      verbose [use twice to be more verbose]</span><br><span class="line">        -w secs                 timeout for connects and final net reads</span><br><span class="line">        -C                      Send CRLF as line-ending</span><br><span class="line">        -z                      zero-I&#x2F;O mode [used for scanning]</span><br><span class="line">port numbers can be individual or ranges: lo-hi [inclusive];</span><br><span class="line">hyphens in port names must be backslash escaped (e.g. &#39;ftp\-data&#39;).</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -262,10 +274,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/04/1-basic/" rel="prev" title="汇编语言-基础知识">
-      <i class="fa fa-chevron-left"></i> 汇编语言-基础知识
+    <a href="/2020/08/11/5-%5Bbx%5D-and-loop/" rel="prev" title="汇编语言-[bx]和loop指令">
+      <i class="fa fa-chevron-left"></i> 汇编语言-[bx]和loop指令
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/11/6-multi-segment/" rel="next" title="汇编语言-包含多个段的程序">
+      汇编语言-包含多个段的程序 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -324,7 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux命令详解-netcat"><span class="nav-number">1.</span> <span class="nav-text">Linux命令详解-netcat</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用netcat命令示例"><span class="nav-number">1.1.</span> <span class="nav-text">常用netcat命令示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-端口扫描"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-文件传输"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 文件传输</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-目录传输"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 目录传输</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-网络加密传输"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. 网络加密传输</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-视频流"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. 视频流</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-克隆一个设备"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. 克隆一个设备</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux命令详解-netcat"><span class="nav-number">1.</span> <span class="nav-text">Linux命令详解-netcat</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#端口扫描"><span class="nav-number">1.1.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件传输"><span class="nav-number">1.2.</span> <span class="nav-text">文件传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#目录传输"><span class="nav-number">1.3.</span> <span class="nav-text">目录传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络加密传输"><span class="nav-number">1.4.</span> <span class="nav-text">网络加密传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视频流"><span class="nav-number">1.5.</span> <span class="nav-text">视频流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#克隆一个设备"><span class="nav-number">1.6.</span> <span class="nav-text">克隆一个设备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打开一个shell"><span class="nav-number">1.7.</span> <span class="nav-text">打开一个shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nc常用参数选项"><span class="nav-number">1.8.</span> <span class="nav-text">nc常用参数选项</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -338,7 +353,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

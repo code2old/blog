@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/linux-nc/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/7-address-locate/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/04/linux-nc/" class="post-title-link" itemprop="url">Linux-nc命令详解</a>
+            <a href="/2020/08/11/7-address-locate/" class="post-title-link" itemprop="url">汇编语言-更灵活的定位内存地址的方法</a>
         </h2>
 
         <div class="post-meta">
@@ -183,106 +183,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-08-04 23:25:42" itemprop="dateCreated datePublished" datetime="2020-08-04T23:25:42+08:00">2020-08-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">Linux命令详解</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Linux命令详解-netcat"><a href="#Linux命令详解-netcat" class="headerlink" title="Linux命令详解-netcat"></a>Linux命令详解-netcat</h3><p>netcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。</p>
-<h4 id="常用netcat命令示例"><a href="#常用netcat命令示例" class="headerlink" title="常用netcat命令示例"></a>常用netcat命令示例</h4><h5 id="1-端口扫描"><a href="#1-端口扫描" class="headerlink" title="1. 端口扫描"></a>1. 端口扫描</h5><p>netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">nc -z -v -n 192.168.63.35 21-25</span></span><br></pre></td></tr></table></figure>
-<p>这个命令会打印21-25所有开放的端口信息，默认为TCP模式（-u可调整为UDP模式）。<br>-z 表示0 IO，即连接成功后马上关闭连接，不进行数据交换<br>-v 表示详细输出<br>-n 表示netcat不使用DNS反向查询IP地址的域名</p>
-<h5 id="2-文件传输"><a href="#2-文件传输" class="headerlink" title="2. 文件传输"></a>2. 文件传输</h5><p>Linux中有很多工具可以进行文件的网络传输，比如：FTP、Samba和scp等工具，但是ftp、samba都需要安装配置，而在一些嵌入式设备中，根本不支持scp命令。在这种情况下，可以使用netcat命令作为传输文件的桥梁进行跨机器的文件传输。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &lt; file.txt            <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 &gt; file.txt   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
-
-<p>以上命令在A机器上创建了一个文件服务器，并且将文件file.txt重定向到netcat，当客户端连接到该端口时，netcat会向客户端发送file.txt的内容。而客户端B会将接收到的文件内容重定向file.txt。</p>
-<p>也可以在A机器上创建文件服务器，等待客户端的连接和发送数据，并将netcat结果重定向到文件中。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A&lt;---B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &gt; file.txt             <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 &lt; file.txt  <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
-
-<h5 id="3-目录传输"><a href="#3-目录传输" class="headerlink" title="3. 目录传输"></a>3. 目录传输</h5><p>发送整个目录或者多个文件时，和发送单个文件的方式原理差不多，只不过需要使用压缩工具tar工具，然后再进行重定向即可。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | nc -l 8000           <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | tar -xvf -     <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在A服务器上创建了一个tar的归档包并将它重定向到netcat服务器，客户端连接到服务器时，服务器便将归档数据发送给客户端，客户端netcat收到数据后再重定向到tar工具。</p>
-<p>如果想要节省带宽，可以通过压缩工具压缩后再进行发送</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | bzip2 -z | nc -l 8000         <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | bzip2 -d | tar -xvf -   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
-
-<p>使用tar归档和bzip2压缩和解压</p>
-<h5 id="4-网络加密传输"><a href="#4-网络加密传输" class="headerlink" title="4. 网络加密传输"></a>4. 网络加密传输</h5><p>在发送数据之前，可以使用mcrypt工具保证数据安全</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mcrypt --flush --bare -F -q -d -m ecb &gt; file.txt    <span class="comment"># 客户端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mcrypt --flush --bare -F -q -m ecb &lt; file.txt | nc -l 8000   <span class="comment">#服务端</span></span></span><br></pre></td></tr></table></figure>
-
-<p>以上两个命令都需要输入密码，而且两端使用相同的密码。这里使用mcrypt工具进行加解密，使用其他加解密工具也可以的。</p>
-<p>（加密工具的用法测试的时候失败了，没有错误的打印，但是客户端输出的文件里面是空的，有知道原因的小伙伴可以交流一下）</p>
-<h5 id="5-视频流"><a href="#5-视频流" class="headerlink" title="5. 视频流"></a>5. 视频流</h5><p>个人觉得用netcat发送视频流不是一个好的方法，linux上用于收发视频流的工具很多，这里只是介绍netcat发送视频流的用法</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat video.mp4 | nc -l 8000</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mplayer -vo x11 -cache 3000 -</span></span><br></pre></td></tr></table></figure>
-
-<p>以上命令netcat从socket中读取数据并重定向到mplayer中</p>
-<h5 id="6-克隆一个设备"><a href="#6-克隆一个设备" class="headerlink" title="6. 克隆一个设备"></a>6. 克隆一个设备</h5><p>如果已经安装配置一台Linux机器并且需要对其他的机器进行同样的操作，只需要启动另一台机器的一些引导就可以克隆机器。假如系统在磁盘/dev/sda上，克隆Linux PC的操作如下</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dd <span class="keyword">if</span>=/dev/sda | nc -l 8000            <span class="comment"># server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 | dd of=/dev/sda   <span class="comment"># client端</span></span></span><br></pre></td></tr></table></figure>
-
-<p>dd是一个从磁盘读取原始数据的工具，通过netcat服务器重定向它的输出流到其他机器并且写入到磁盘中，它会随着分区表拷贝所有的信息。但是如果已经做过分区并且只需要克隆root分区，我们可以根据我们系统root分区的位置，更改sda 为sda1，sda2.等等。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/1-basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/04/1-basic/" class="post-title-link" itemprop="url">汇编语言-基础知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-04 21:59:24" itemprop="dateCreated datePublished" datetime="2020-08-04T21:59:24+08:00">2020-08-04</time>
+              <time title="Created: 2020-08-11 22:36:55 / Modified: 21:50:00" itemprop="dateCreated datePublished" datetime="2020-08-11T22:36:55+08:00">2020-08-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,54 +208,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="第一章-基础知识"><a href="#第一章-基础知识" class="headerlink" title="第一章 基础知识"></a>第一章 基础知识</h3><h4 id="1-1-机器语言"><a href="#1-1-机器语言" class="headerlink" title="1.1 机器语言"></a>1.1 机器语言</h4><p>机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。</p>
-<h4 id="1-2-汇编语言的产生"><a href="#1-2-汇编语言的产生" class="headerlink" title="1.2 汇编语言的产生"></a>1.2 汇编语言的产生</h4><p>汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">操作：寄存器BX的内容送到AX中</span><br><span class="line">机器指令：1000100111011000</span><br><span class="line">汇编指令：mov ax, bx</span><br></pre></td></tr></table></figure>
-<p>将汇编指令转换成机器指令的翻译程序就被称为编译器。</p>
-<h4 id="1-3-汇编语言的组成"><a href="#1-3-汇编语言的组成" class="headerlink" title="1.3 汇编语言的组成"></a>1.3 汇编语言的组成</h4><p>汇编语言由以下3类指令组成：</p>
-<ul>
-<li>汇编指令：机器码的助记符，有对应的机器码</li>
-<li>伪指令：没有对应的机器码，由编译器执行，计算机并不执行</li>
-<li>其他符号：如+、-、*、/等，由编译器识别，没有对应的机器码。<br>汇编语言的核心是机器指令，它决定了汇编语言的特性</li>
-</ul>
-<h4 id="1-4-存储器"><a href="#1-4-存储器" class="headerlink" title="1.4 存储器"></a>1.4 存储器</h4><p>CPU是计算机的核心部件，它控制整个计算机的运作并进行运算。指令和数据在存储器中存放。学习汇编首先要了解CPU是如何从内存中读取信息，以及向内存中写入信息的。</p>
-<h4 id="1-5-指令和数据"><a href="#1-5-指令和数据" class="headerlink" title="1.5 指令和数据"></a>1.5 指令和数据</h4><p>指令和数据都是应用上的概念。在内存和磁盘中指令和数据没有任何区别，都是二进制信息。</p>
-<h4 id="1-6-存储单元"><a href="#1-6-存储单元" class="headerlink" title="1.6 存储单元"></a>1.6 存储单元</h4><p>存储器被划分为若干个存储单元，每个存储单元从0开始顺序编号。电子计算机的最小信息单位是bit，微机存储器的容量是以字节为最小单位来计算的。</p>
-<h4 id="1-7-CPU对存储器的读写"><a href="#1-7-CPU对存储器的读写" class="headerlink" title="1.7 CPU对存储器的读写"></a>1.7 CPU对存储器的读写</h4><p>CPU要想进行数据的读写，必须和外部器件进行3类信息交换：</p>
-<ul>
-<li>存储单元的地址（地址信息）</li>
-<li>器件的选择，读或写的命令（控制信息）</li>
-<li>读或写的书写（数据信息）<br>计算机中专门连接CPU和其他芯片的导线被称为总线，从逻辑上将分为3类：地址总线、控制总线和数据总线</li>
-</ul>
-<h4 id="1-8-地址总线"><a href="#1-8-地址总线" class="headerlink" title="1.8 地址总线"></a>1.8 地址总线</h4><p>CPU是通过地址总线来指定存储单元的。地址总线上能传送多少个不同的信息，CPU就可以对多少个存储单元进行寻址。一个CPU有N跟地址总线，则这个CPU的地址总线宽度为N。这样CPU最多可以对2^N个内存单元进行寻址</p>
-<h4 id="1-9-数据总线"><a href="#1-9-数据总线" class="headerlink" title="1.9 数据总线"></a>1.9 数据总线</h4><p>CPU通过数据总线与其它器件进行数据交互。总线宽度决定了CPU与外界的数据传送速度。8088CPU数据总线宽度为8，一次可传送一个字节，8086CPU的数据总线宽度为16，一次可传送2个字节。</p>
-<h4 id="1-10-控制总线"><a href="#1-10-控制总线" class="headerlink" title="1.10 控制总线"></a>1.10 控制总线</h4><p>CPU通过控制总线对外部器件进行控制，控制总线的宽度决定了CPU对外部器件的控制能力。</p>
-<h4 id="1-11-内存地址空间概述"><a href="#1-11-内存地址空间概述" class="headerlink" title="1.11 内存地址空间概述"></a>1.11 内存地址空间概述</h4><h5 id="1-11-1-主板"><a href="#1-11-1-主板" class="headerlink" title="1.11.1 主板"></a>1.11.1 主板</h5><h5 id="1-11-2-接口卡"><a href="#1-11-2-接口卡" class="headerlink" title="1.11.2 接口卡"></a>1.11.2 接口卡</h5><p>CPU通过总线向接口卡发送命令，接口卡根据CPU的命令控制外设进行工作</p>
-<h4 id="1-12-各类存储器芯片"><a href="#1-12-各类存储器芯片" class="headerlink" title="1.12 各类存储器芯片"></a>1.12 各类存储器芯片</h4><p>存储器从读写属性上分为两类：随机存储器（RAM）和只读存储器（ROM）。随机存储器可读可写，但必须带电存储，断电后存储内容丢失；只读存储器只能读取不能写，断电后内容不丢失。存储器从功能和连接上又分为以下几类：</p>
-<ul>
-<li>随机存储器</li>
-<li>装有BIOS（Basic Input/Output System）的ROM</li>
-<li>接口卡上的RAM</li>
-</ul>
-<h4 id="1-13-内存地址空间"><a href="#1-13-内存地址空间" class="headerlink" title="1.13 内存地址空间"></a>1.13 内存地址空间</h4><p>所有物理存储器被看作一个由若干存储单元组成的逻辑存储器，每个物理存储器在这个逻辑存储器中占有一个地址段，即一段地址空间。8086CPU的地址总线宽度为20，可以定位2^20(1M)的内存单元，80386地址总线宽度为32，最大寻址空间为4G。8086地址空间分配基本情况如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">00000 |————————————————————|</span><br><span class="line">      |   主存储器地址空间  |</span><br><span class="line">      |      (RAM)         |</span><br><span class="line">9FFFF |____________________|</span><br><span class="line">A0000 |                    |</span><br><span class="line">      |    显存地址空间     |</span><br><span class="line">BFFFF |____________________|</span><br><span class="line">C0000 |                    |</span><br><span class="line">      |   各类ROM地址空间   | </span><br><span class="line">FFFFF |____________________|</span><br></pre></td></tr></table></figure>
+          <h3 id="第七章-更灵活的定位内存地址的方法"><a href="#第七章-更灵活的定位内存地址的方法" class="headerlink" title="第七章 更灵活的定位内存地址的方法"></a>第七章 更灵活的定位内存地址的方法</h3><h4 id="and和or指令"><a href="#and和or指令" class="headerlink" title="and和or指令"></a>and和or指令</h4><p>and指令：逻辑与指令，按位进行与运算；or指令：逻辑或指令，按位进行或运算</p>
+<h4 id="关于ASCII码"><a href="#关于ASCII码" class="headerlink" title="关于ASCII码"></a>关于ASCII码</h4><p><img src="../images/app-encoding.ascii.png" alt="ASCII"></p>
+<h4 id="以字符形式给出的数据"><a href="#以字符形式给出的数据" class="headerlink" title="以字符形式给出的数据"></a>以字符形式给出的数据</h4><p>汇编中用’……’的方式指明数据是以字符的形式给出的，编译器将它们转化为相对应的ASCII码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">assume ds:data</span><br><span class="line">data segment</span><br><span class="line">    db &#39;unix&#39;</span><br><span class="line">    db &#39;fork&#39;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:  mov al, &#39;a&#39;</span><br><span class="line">        mov bl, &#39;b&#39;</span><br><span class="line">        mov ax, 4c00H</span><br><span class="line">        int 21H</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
 
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
-<li>汇编指令是机器指令的助记符，同机器指令一一对应</li>
-<li>每一种CPU都有自己的汇编指令集</li>
-<li>CPU直接使用的信息存放在存储器中</li>
-<li>在存储中指令和数据没有任何区别，都是二进制信息</li>
-<li>存储单元从0开始顺序编号</li>
-<li>一个存储单元可以存储8个bit，即8位二进制数</li>
-<li>1B=8b 1KB=1024B 1MB=1024KB 1GB=1024MB</li>
-<li>每一个CPU芯片都有许多管脚，这些管脚和总线相连。一个CPU可以引出三种总线的宽度标志了这个CPU不同方面的性能：<ul>
-<li>地址总线的宽度决定了CPU的寻址能力</li>
-<li>数据总线的宽度决定了CPU与其它器件进行数据传输的一次数据传输量</li>
-<li>控制总线的宽度决定了CPU对系统中其它器件的控制能力</li>
+<p>上面源代码中：<code>db &#39;unix&#39;</code>相当于<code>db 75H, 6EH, 49H, 58H</code>，<code>mov al, &#39;a&#39;</code>相当于<code>mov al, 64H</code></p>
+<h4 id="大小写转化的问题"><a href="#大小写转化的问题" class="headerlink" title="大小写转化的问题"></a>大小写转化的问题</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code, ds:data</span><br><span class="line">data segment</span><br><span class="line">    db &#39;BaSic&#39;</span><br><span class="line">    db &#39;iNfOrMaTiOn&#39;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:  mov ax, data</span><br><span class="line">        mov ds, ax</span><br><span class="line">        mov bx, 0</span><br><span class="line">        mov cx, 5</span><br><span class="line"></span><br><span class="line">s0:     mov al, [bx]</span><br><span class="line">        and al, 11011111B</span><br><span class="line">        mov [bx], al</span><br><span class="line">        inc bx</span><br><span class="line">        loop s0</span><br><span class="line"></span><br><span class="line">        mov bx, 5</span><br><span class="line">        mov cx, 11</span><br><span class="line"></span><br><span class="line">s1      mov al, [bx]</span><br><span class="line">        or al, 00100000B</span><br><span class="line">        mov [bx], al</span><br><span class="line">        inc bx</span><br><span class="line">        loop s1</span><br><span class="line"></span><br><span class="line">        mov ax, 4c00H</span><br><span class="line">        int 21H</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="bx-idata"><a href="#bx-idata" class="headerlink" title="[bx+idata]"></a>[bx+idata]</h4><p>[bx+idata]表示一个内存单元，它的偏移地址为<code>(bx)+idata</code>(bx中的数值加上idata)</p>
+<p>例如：<code>mov ax, [bx+100]</code>表示偏移地址为<code>bx</code>中的数值加上200，段地址在ds中，数学化的描述为：<code>(ax)=((ds)*16+(bx)+200)</code>，该指令也可以写成如下格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [200+bx]</span><br><span class="line">mov ax, 100[bx]</span><br><span class="line">mov ax, [bx].200</span><br></pre></td></tr></table></figure>
+
+<h4 id="用-bx-idata-的方式进行数组的处理"><a href="#用-bx-idata-的方式进行数组的处理" class="headerlink" title="用[bx+idata]的方式进行数组的处理"></a>用[bx+idata]的方式进行数组的处理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code, ds:data</span><br><span class="line">data segment</span><br><span class="line">    db &#39;BaSiC&#39;</span><br><span class="line">    db &#39;MinIX&#39;</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax, data</span><br><span class="line">    mov ds, ax</span><br><span class="line">    </span><br><span class="line">    mov bx, 0</span><br><span class="line">    mov cx, 5</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov al, [bx]</span><br><span class="line">    and al, 11011111B</span><br><span class="line">    mov [bx], al</span><br><span class="line">    mov al, [bx+5]</span><br><span class="line">    or al, 00100000B</span><br><span class="line">    mov [bx+5], al</span><br><span class="line">    inc bx</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="SI和DI"><a href="#SI和DI" class="headerlink" title="SI和DI"></a>SI和DI</h4><p>SI和DI是8086CPU中和bx功能相近的寄存器，SI和DI不能够分成两个8位寄存器来使用。</p>
+<h4 id="bx-si-和-bx-di"><a href="#bx-si-和-bx-di" class="headerlink" title="[bx+si]和[bx+di]"></a>[bx+si]和[bx+di]</h4><p>前面用<code>[bx(si/di)]</code>和<code>[bx(si/di)+idata]</code>的方式来指明一个内存单元，而<code>[bx+si]</code>和<code>[bx+di]</code>的方式更加灵活</p>
+<p><code>[bx+si]</code>表示一个内存单元，它的偏移地址为<code>(bx)+(si)</code>，即<code>bx</code>中的数值加上<code>si</code>上的数值。</p>
+<p><code>mov ax, [bx+si]</code>的含义为：将一个内存单元的内容送入ax，这个内存单元的长度为2字节，存放一个字，偏移地址为bx中的数值加上si中的数值，段地址在ds中；数学描述为：<code>(ax)=((ds)*16+(bx)+(si))</code>；该指令也可以写成以下格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx][si]</span><br></pre></td></tr></table></figure>
+
+<h4 id="bx-si-idata-和-bx-di-idata"><a href="#bx-si-idata-和-bx-di-idata" class="headerlink" title="[bx+si+idata]和[bx+di+idata]"></a>[bx+si+idata]和[bx+di+idata]</h4><p><code>[bx+si+idata]</code>和<code>[bx+di+idata]</code>的含义类似，都表示一个内存单元，它的偏移地址为<code>(bx)+(si)+idata</code>（即bx中的数值加上si中的数值再加上idata）</p>
+<p><code>mov ax, [bx+si+idata]</code>的含义为：将一个内存单元的内容送入ax，这个内存单元的长度为2字节，存放一个字，偏移地址为bx中的数值加上si中的数值再加上idata，段地址在ds中；数学描述为：<code>(ax)=((ds)*16+(bx)+(si)+idata)</code>；该指令也可以写成以下格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx+200+si]</span><br><span class="line">mov ax, [200+bx+si]</span><br><span class="line">mov ax, 200[bx][si]</span><br><span class="line">mov ax, [bx].200[si]</span><br><span class="line">mov ax, [bx][si].200</span><br></pre></td></tr></table></figure>
+
+<h4 id="不同寻址方式的灵活应用"><a href="#不同寻址方式的灵活应用" class="headerlink" title="不同寻址方式的灵活应用"></a>不同寻址方式的灵活应用</h4><p>对比几种定位内存地址的方式（可称为寻址方式），有以下几种形式：</p>
+<ul>
+<li><code>[idata]</code>用一个常量来表示地址，可用于直接定位一个内存单元</li>
+<li><code>[bx]</code>用一个变量来标识内存地址，可用于间接定位一个内存单元</li>
+<li><code>[bx+idata]</code>用一个变量和常量表示地址，可在一个起始地址的基础上用变量间接定位一个内存单元</li>
+<li><code>[bx+si]</code>用两个变量表示地址</li>
+<li><code>[bx+si+idata]</code>用两个变量和一个常量表示地址</li>
 </ul>
-</li>
-</ul>
-<p>对CPU来讲，系统中的所有存储器中的存储单元都处于一个统一的逻辑存储器中，它的容量受CPU寻址能力的限制。这个逻辑存储器即是我们所说的内存地址空间。</p>
+<p><strong>问题7.6-7.8</strong></p>
 
       
     </div>
@@ -372,7 +260,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/2-register(CPU)/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/6-multi-segment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -386,7 +274,96 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/04/2-register(CPU)/" class="post-title-link" itemprop="url">汇编语言-寄存器（CPU工作原理）</a>
+            <a href="/2020/08/11/6-multi-segment/" class="post-title-link" itemprop="url">汇编语言-包含多个段的程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-08-11 22:36:28 / Modified: 20:50:00" itemprop="dateCreated datePublished" datetime="2020-08-11T22:36:28+08:00">2020-08-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第六章-包含多个段的程序"><a href="#第六章-包含多个段的程序" class="headerlink" title="第六章 包含多个段的程序"></a>第六章 包含多个段的程序</h3><p>在操作系统的环境中，合法地通过操作系统取得的空间都是安全的，因为操作系统不会让一个程序所在的空间和其他程序以及系统自己的空间相冲突。操作系统允许的情况下，程序可以取得任意容量的空间。</p>
+<p>程序取得所需空间的方法有两种：加载程序时为程序分配，程序执行过程中向系统申请。</p>
+<h4 id="6-1-在代码段中使用数据"><a href="#6-1-在代码段中使用数据" class="headerlink" title="6.1 在代码段中使用数据"></a>6.1 在代码段中使用数据</h4><p>从规范的角度讲，是不能自己随便决定使用哪段空间的，应该让系统来分配空间。我们可以在程序中定义希望处理的数据，这些数据就会被编译、链接而作为程序的一部分被写入到可执行文件中，这样程序被加载到内存时，数据也被加载到内存中，此时就获得了空间。</p>
+<p>end除了通知编译器程序结束外，还可以通知编译器程序的入口在什么地方。</p>
+<p>可执行文件中的描述信息指明CPU的CS:IP指向程序的哪一条执行指令。程序来源于源程序中的汇编指令和定义的数据：描述信息则主要是编译、链接程序对源程序中相关伪指令进行处理所得到的信息。</p>
+<p>程序框架：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    ; 数据</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">    ; 代码</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">asssume cs:code</span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">    dw 0123H, 0456H, 0789H, 0abcH, 0fedH, 0cbaH, 0987H</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">    mov bx, 0</span><br><span class="line">    mov ax, 0</span><br><span class="line">    mov cx, 8</span><br><span class="line"></span><br><span class="line">s:  add ax, cs:[bx]</span><br><span class="line">    add bx, 2</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-2-在代码段中使用栈"><a href="#6-2-在代码段中使用栈" class="headerlink" title="6.2 在代码段中使用栈"></a>6.2 在代码段中使用栈</h4><p>利用栈将程序中定义的数据逆序存放：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg</span><br><span class="line">codeseg segment</span><br><span class="line">    dw 0123H, 0456H, 0789H, 0abcH, 0defH, 0cbaH, 0987H</span><br><span class="line">    dw 0, 0, 0, 0, 0, 0, 0, 0   ;用dw定义8个字型数据，</span><br><span class="line">                                ;程序加载后，将取得8个字的内存空间，存放这8个数据</span><br><span class="line">                                ;后面的程序中将这段空间当作栈来使用</span><br><span class="line"></span><br><span class="line">start:  mov ax, cs</span><br><span class="line">        mov ss, ax</span><br><span class="line">        mov sp, 32              ;将设置栈顶ss:sp指向cs:32</span><br><span class="line">        mov bx, 0</span><br><span class="line">        mov cx, 8</span><br><span class="line"></span><br><span class="line">s0:     push cs:[bx]            ;将代码段0-16单元中的8个字型数据以此入栈</span><br><span class="line">        add bx, 2</span><br><span class="line">        loop s0</span><br><span class="line"></span><br><span class="line">        mov bx, 0</span><br><span class="line">        mov cx, 8</span><br><span class="line"></span><br><span class="line">s1:     pop cs:[bx]</span><br><span class="line">        add bx, 2</span><br><span class="line">        loop s1</span><br><span class="line"></span><br><span class="line">        mov ax, 4c00h</span><br><span class="line">        int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start                       ;指明程序的入口地址在start处</span><br></pre></td></tr></table></figure>
+
+<h4 id="将数据、代码、栈放入不同的段"><a href="#将数据、代码、栈放入不同的段" class="headerlink" title="将数据、代码、栈放入不同的段"></a>将数据、代码、栈放入不同的段</h4><p>首先看一段代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code, ds:data, ss:stack</span><br><span class="line">data segment</span><br><span class="line">    dw 0123H, 0456H, 0789H, 0abcH, 0defH, 0cbaH, 0987H</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:  mov ax, stack</span><br><span class="line">        mov ss, ax</span><br><span class="line">        mov sp, 16      ;设置栈顶ss:sp指向stack:16</span><br><span class="line"></span><br><span class="line">        mov ax, data</span><br><span class="line">        mov ds, ax      ;ds指向data段</span><br><span class="line"></span><br><span class="line">        mov bx, 0       ;ds:bx指向data段的第一个单元</span><br><span class="line">        mov cx, 8</span><br><span class="line"></span><br><span class="line">s0:     push [bx]</span><br><span class="line">        add bx, 2</span><br><span class="line">        loop s1</span><br><span class="line"></span><br><span class="line">        mov bx, 0</span><br><span class="line">        mov cx, 8</span><br><span class="line"></span><br><span class="line">s1:     pop [bx]</span><br><span class="line">        add bx, 2</span><br><span class="line">        loop s1</span><br><span class="line"></span><br><span class="line">        mov ax, 4c00h</span><br><span class="line">        int 21h</span><br><span class="line">    </span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>定义多个段的方法：与之前定义代码段的方法没有区别，只是对于不同的段，要有不同的段名</p>
+<p>对段地址的引用：在程序中，段名就相当于一个标号，代表了段地址。所以指令<code>mov ax, data</code>的含义就是将名称为<code>data</code>的段的段地址送入<code>ax</code>。一个段中的数据的段地址可由段名代表，偏移地址就要看它在段中的位置了。注意：8086CPU不允许将一个数值直接送入段寄存器，所以对段名的引用：如指令<code>mov ds, data</code>中的<code>data</code>将被编译器处理为一个表示段地址的数值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, data</span><br><span class="line">mov ds, ax</span><br><span class="line">mov ax, ds:[6]</span><br></pre></td></tr></table></figure>
+
+<p>CPU到底如何处理我们定义的段中的内容，是当作指令执行，当作数据访问还是当作栈空间，完全是靠程序中具体的汇编指令，和汇编指令对CS:IP、SS:SP、DS等寄存器的设置来决定的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/linux-nc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/11/linux-nc/" class="post-title-link" itemprop="url">Linux-nc命令详解</a>
         </h2>
 
         <div class="post-meta">
@@ -396,8 +373,390 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-04 21:59:18" itemprop="dateCreated datePublished" datetime="2020-08-04T21:59:18+08:00">2020-08-04</time>
+              <time title="Created: 2020-08-11 22:34:12" itemprop="dateCreated datePublished" datetime="2020-08-11T22:34:12+08:00">2020-08-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-10 20:00:00" itemprop="dateModified" datetime="2020-08-10T20:00:00+08:00">2020-08-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">Linux命令详解</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Linux命令详解-netcat"><a href="#Linux命令详解-netcat" class="headerlink" title="Linux命令详解-netcat"></a>Linux命令详解-netcat</h3><p>netcat是网络工具中的瑞士军刀，它能读写网络中的TCP和UDP数据，并且可以通过重定向与其它工具结合使用，从而发挥出令人惊讶的功能。以下是常用nc命令的示例</p>
+<h4 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h4><p>netcat可以作为端口扫描工具来发现机器上开放的端口，帮助系统管理员或者黑客发现系统上存在的漏洞</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">nc -z -v -n 192.168.63.35 21-25</span></span><br></pre></td></tr></table></figure>
+<p>这个命令会打印21-25所有开放的端口信息，默认为TCP模式（-u可调整为UDP模式）。<br>-z 表示0 IO，即连接成功后马上关闭连接，不进行数据交换<br>-v 表示详细输出<br>-n 表示netcat不使用DNS反向查询IP地址的域名</p>
+<h4 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h4><p>Linux中有很多工具可以进行文件的网络传输，比如：FTP、Samba和scp等工具，但是ftp、samba都需要安装配置，而在一些嵌入式设备中，根本不支持scp命令。在这种情况下，可以使用netcat命令作为传输文件的桥梁进行跨机器的文件传输。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &lt; file.txt            <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 &gt; file.txt   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令在A机器上创建了一个文件服务器，并且将文件file.txt重定向到netcat，当客户端连接到该端口时，netcat会向客户端发送file.txt的内容。而客户端B会将接收到的文件内容重定向file.txt。</p>
+<p>也可以在A机器上创建文件服务器，等待客户端的连接和发送数据，并将netcat结果重定向到文件中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A&lt;---B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -l 8000 &gt; file.txt             <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 &lt; file.txt  <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="目录传输"><a href="#目录传输" class="headerlink" title="目录传输"></a>目录传输</h4><p>发送整个目录或者多个文件时，和发送单个文件的方式原理差不多，只不过需要使用压缩工具tar工具，然后再进行重定向即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> A---&gt;B</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | nc -l 8000           <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | tar -xvf -     <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在A服务器上创建了一个tar的归档包并将它重定向到netcat服务器，客户端连接到服务器时，服务器便将归档数据发送给客户端，客户端netcat收到数据后再重定向到tar工具。</p>
+<p>如果想要节省带宽，可以通过压缩工具压缩后再进行发送</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar -cvf - dirname | bzip2 -z | nc -l 8000         <span class="comment"># 机器A，server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 8000 | bzip2 -d | tar -xvf -   <span class="comment"># 机器B，client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>使用tar归档和bzip2压缩和解压</p>
+<h4 id="网络加密传输"><a href="#网络加密传输" class="headerlink" title="网络加密传输"></a>网络加密传输</h4><p>在发送数据之前，可以使用mcrypt工具保证数据安全</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mcrypt --flush --bare -F -q -d -m ecb &gt; file.txt    <span class="comment"># 客户端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mcrypt --flush --bare -F -q -m ecb &lt; file.txt | nc -l 8000   <span class="comment">#服务端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>以上两个命令都需要输入密码，而且两端使用相同的密码。这里使用mcrypt工具进行加解密，使用其他加解密工具也可以的。</p>
+<p>（加密工具的用法测试的时候失败了，没有错误的打印，但是客户端输出的文件里面是空的，有知道原因的小伙伴可以交流一下）</p>
+<h4 id="视频流"><a href="#视频流" class="headerlink" title="视频流"></a>视频流</h4><p>个人觉得用netcat发送视频流不是一个好的方法，linux上用于收发视频流的工具很多，这里只是介绍netcat发送视频流的用法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat video.mp4 | nc -l 8000</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc 192.168.63.35 8000 | mplayer -vo x11 -cache 3000 -</span></span><br></pre></td></tr></table></figure>
+
+<p>以上命令netcat从socket中读取数据并重定向到mplayer中</p>
+<h4 id="克隆一个设备"><a href="#克隆一个设备" class="headerlink" title="克隆一个设备"></a>克隆一个设备</h4><p>如果已经安装配置一台Linux机器并且需要对其他的机器进行同样的操作，只需要启动另一台机器的一些引导就可以克隆机器。假如系统在磁盘/dev/sda上，克隆Linux PC的操作如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dd <span class="keyword">if</span>=/dev/sda | nc -l 8000            <span class="comment"># server端</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nc -n 192.168.63.35 | dd of=/dev/sda   <span class="comment"># client端</span></span></span><br></pre></td></tr></table></figure>
+
+<p>dd是一个从磁盘读取原始数据的工具，通过netcat服务器重定向它的输出流到其他机器并且写入到磁盘中，它会随着分区表拷贝所有的信息。但是如果已经做过分区并且只需要克隆root分区，我们可以根据我们系统root分区的位置，更改sda 为sda1，sda2.等等。</p>
+<h4 id="打开一个shell"><a href="#打开一个shell" class="headerlink" title="打开一个shell"></a>打开一个shell</h4><p>如果没有安装telnet或ssh，可以使用netcat创建远程shell</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ nc -v -c /bin/bash -lp 8000</span><br><span class="line">$ nc -v 192.168.63.35 8000</span><br></pre></td></tr></table></figure>
+
+<h4 id="nc常用参数选项"><a href="#nc常用参数选项" class="headerlink" title="nc常用参数选项"></a>nc常用参数选项</h4><p>nc -h查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[v1.10-41.1]</span><br><span class="line">connect to somewhere:   nc [-options] hostname port[s] [ports] ... </span><br><span class="line">listen for inbound:     nc -l -p port [-options] [hostname] [port]</span><br><span class="line">options:</span><br><span class="line">        -c shell commands       as &#96;-e&#39;; use &#x2F;bin&#x2F;sh to exec [dangerous!!]</span><br><span class="line">        -e filename             program to exec after connect [dangerous!!]</span><br><span class="line">        -b                      allow broadcasts</span><br><span class="line">        -g gateway              source-routing hop point[s], up to 8</span><br><span class="line">        -G num                  source-routing pointer: 4, 8, 12, ...</span><br><span class="line">        -h                      this cruft</span><br><span class="line">        -i secs                 delay interval for lines sent, ports scanned</span><br><span class="line">        -k                      set keepalive option on socket</span><br><span class="line">        -l                      listen mode, for inbound connects</span><br><span class="line">        -n                      numeric-only IP addresses, no DNS</span><br><span class="line">        -o file                 hex dump of traffic</span><br><span class="line">        -p port                 local port number</span><br><span class="line">        -r                      randomize local and remote ports</span><br><span class="line">        -q secs                 quit after EOF on stdin and delay of secs</span><br><span class="line">        -s addr                 local source address</span><br><span class="line">        -T tos                  set Type Of Service</span><br><span class="line">        -t                      answer TELNET negotiation</span><br><span class="line">        -u                      UDP mode</span><br><span class="line">        -v                      verbose [use twice to be more verbose]</span><br><span class="line">        -w secs                 timeout for connects and final net reads</span><br><span class="line">        -C                      Send CRLF as line-ending</span><br><span class="line">        -z                      zero-I&#x2F;O mode [used for scanning]</span><br><span class="line">port numbers can be individual or ranges: lo-hi [inclusive];</span><br><span class="line">hyphens in port names must be backslash escaped (e.g. &#39;ftp\-data&#39;).</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/5-[bx]-and-loop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/11/5-%5Bbx%5D-and-loop/" class="post-title-link" itemprop="url">汇编语言-[bx]和loop指令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-11 22:33:57" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:57+08:00">2020-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:50:00" itemprop="dateModified" datetime="2020-08-01T20:50:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第五章-bx-和loop指令"><a href="#第五章-bx-和loop指令" class="headerlink" title="第五章 [bx]和loop指令"></a>第五章 [bx]和loop指令</h3><p>[bx]和[0]有些类似，[0]表示内存单元，它的偏移地址是0。要完整的描述一个内存单元，需要两种信息：（1）内存单元的地址；（2）内存单元的长度（类型）。[bx]可以表示一个内存单元，它的偏移地址在bx中，比如以下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]    # 将一个内存单元的内容送入ax，这个内存单元的长度为2（字单元），存放一个字，偏移地址在bx中，段地址在ds中。</span><br></pre></td></tr></table></figure>
+
+<p>后续课程中：用“()”表示一个寄存器或一个内存单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(ax)            # 表示ax中的内容</span><br><span class="line">(al)            # 表示al中的内容</span><br><span class="line">(20000H)        # 表示内存20000H单元的内容</span><br><span class="line">((ds)*16+(bx))  # 表示ds中的内容为ADRR1，bx中的内容为ADRR2，ADRR1x16+ADRR2表示内存ADRR1:ADRR2单元的内容</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/11/5-%5Bbx%5D-and-loop/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/4-first-program/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/11/4-first-program/" class="post-title-link" itemprop="url">汇编语言-第一个程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-11 22:33:44" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:44+08:00">2020-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:30:00" itemprop="dateModified" datetime="2020-08-01T20:30:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第四章-第1个程序"><a href="#第四章-第1个程序" class="headerlink" title="第四章 第1个程序"></a>第四章 第1个程序</h3><h4 id="一个源程序从写出到执行的过程"><a href="#一个源程序从写出到执行的过程" class="headerlink" title="一个源程序从写出到执行的过程"></a>一个源程序从写出到执行的过程</h4><p>一个汇编语言程序从写出到最终执行的简要过程如下：</p>
+<ul>
+<li>第一步 编写汇编源程序，这一步工作的结果是产生了一个存储源程序的文本文件</li>
+<li>第二步 对源程序进行编译链接，使用编译程序对源文件编译，产生目标文件；再用连接程序对目标文件进行链接，生成可在操作系统中运行的可执行文件。可执行文件中包含两部分内容<ul>
+<li>程序和数据</li>
+<li>相关的描述信息</li>
+</ul>
+</li>
+<li>第三步 执行可执行文件中的程序</li>
+</ul>
+<h4 id="源程序"><a href="#源程序" class="headerlink" title="源程序"></a>源程序</h4><p>程序4.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line"></span><br><span class="line">codesg segment</span><br><span class="line"></span><br><span class="line">start: mov ax, 0123H</span><br><span class="line">       mov bx, 0456H</span><br><span class="line">       add ax, bx</span><br><span class="line">       add ax, ax</span><br><span class="line"></span><br><span class="line">       mov ax, 4c00H</span><br><span class="line">       int 21H</span><br><span class="line"></span><br><span class="line">codesg ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/11/4-first-program/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/3-register(Memory)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/11/3-register(Memory)/" class="post-title-link" itemprop="url">汇编语言-寄存器（内存访问）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-11 22:33:32" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:32+08:00">2020-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:20:00" itemprop="dateModified" datetime="2020-08-01T20:20:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第三章-寄存器（内存访问）"><a href="#第三章-寄存器（内存访问）" class="headerlink" title="第三章 寄存器（内存访问）"></a>第三章 寄存器（内存访问）</h3><h4 id="内存中字的存储"><a href="#内存中字的存储" class="headerlink" title="内存中字的存储"></a>内存中字的存储</h4><p>CPU中，用16位寄存器来存储一个字。高8位存放高位字节，低8位存放低位字节。在内存中存储时，由于内存单元是字节单元（一个单元存放一个字节），则一个字要用两个地址连续的内存单元存放。这个字的低位字节存放在低地址单元中，高位字节存放在高地址单元中。</p>
+<p>字单元，即存放一个字型数据（16）位。由两个地址连续的内存单元组成。高地址内存单元存放字型数据的高位字节，低地址内存单元中存放字型数据的低位字节。</p>
+<h4 id="DS和-address"><a href="#DS和-address" class="headerlink" title="DS和[address]"></a>DS和[address]</h4><p>8080CPU中通常用DS寄存器来存放要访问数据的段地址。例如读取10000H单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov bx, 1000H</span><br><span class="line">mov ds, bx</span><br><span class="line">mov al, [0]</span><br></pre></td></tr></table></figure>
+
+<p>上面三条指令将10000H(1000:0)中的数据读到al中。</p>
+<p><code>mov al [0]</code>中“[…]”表示一个内存单元，”[…]”中的0表示内存单元的偏移地址。指令执行时，8086CPU自动取DS寄存器中的数据为内存单元的段地址。</p>
+<p>8086CPU不支持数据直接送入段寄存器操作，DS是一个段寄存器，所以mov ds, 1000H这条指令是非法的。所以只能用一个寄存器进行中转。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/11/3-register(Memory)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/2-register(CPU)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/11/2-register(CPU)/" class="post-title-link" itemprop="url">汇编语言-寄存器（CPU工作原理）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-11 22:33:16" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:16+08:00">2020-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:10:00" itemprop="dateModified" datetime="2020-08-01T20:10:00+08:00">2020-08-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -422,7 +781,7 @@
           <h3 id="第二章-寄存器（CPU工作原理）"><a href="#第二章-寄存器（CPU工作原理）" class="headerlink" title="第二章 寄存器（CPU工作原理）"></a>第二章 寄存器（CPU工作原理）</h3><p>内部总线实现CPU内部各个器件之间的联系，外部总线实现CPU和主板上其它器件的联系。在CPU中：运算器进行信息处理、寄存器进行信息存储、控制器控制各种器件进行工作、内部总线连接各种器件，在它们之间进行数据传输。</p>
 <p>汇编程序员通过改变各种寄存器中的内容来实现对CPU的控制。</p>
 <p>8086CPU有14个寄存器，分别是：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。</p>
-<h4 id="2-1-通用寄存器"><a href="#2-1-通用寄存器" class="headerlink" title="2.1 通用寄存器"></a>2.1 通用寄存器</h4><p>8086CPU的所有寄存器都是16位的，可以存放2个字节。AX、BX、CX、DX四个寄存器通常用来存放一般性数据，被称为通用寄存器。为了兼容上一代8位寄存器的CPU，8086CPU的AX、BX、CX、DX都可分为两个独立使用的8位寄存器来用：</p>
+<h4 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h4><p>8086CPU的所有寄存器都是16位的，可以存放2个字节。AX、BX、CX、DX四个寄存器通常用来存放一般性数据，被称为通用寄存器。为了兼容上一代8位寄存器的CPU，8086CPU的AX、BX、CX、DX都可分为两个独立使用的8位寄存器来用：</p>
 <ul>
 <li>AX可分为AH和AL</li>
 <li>BX可分为BH和BL</li>
@@ -431,116 +790,14 @@
 </ul>
 <p>以AX为例，8086CPU的16位寄存器逻辑结构如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|—————————————————————————————————AX——————————————————————————————————|</span><br><span class="line">| 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |</span><br><span class="line">|____|____|____|____|____|____|___|___|___|___|___|___|___|___|___|___|</span><br><span class="line">|———————————————AH————————————————————|—————————————AL————————————————|</span><br><span class="line">| 7  | 6  | 5  | 4  | 3  |  2 | 1 | 0 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |</span><br><span class="line">|____|____|____|____|____|____|___|___|___|___|___|___|___|___|___|___|</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-字在存储器中的存储"><a href="#2-2-字在存储器中的存储" class="headerlink" title="2.2 字在存储器中的存储"></a>2.2 字在存储器中的存储</h4><p>出于兼容性的考虑，8086CPU可以一次性处理两种尺寸的数据：</p>
-<ul>
-<li>字节：记为byte，一个字节由8个bit组成，可以存放在8位寄存器中</li>
-<li>字：记为word，一个字由两个字节组成，这两个字节分别被称为这个字的高位字节和低位字节</li>
-</ul>
-<h4 id="2-3-几条汇编指令"><a href="#2-3-几条汇编指令" class="headerlink" title="2.3 几条汇编指令"></a>2.3 几条汇编指令</h4><p>汇编指令举例：</p>
-<table>
-<thead>
-<tr>
-<th align="left">汇编指令</th>
-<th align="left">控制CPU完成的操作</th>
-<th align="left">用高级语言的语法描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">mov ax, 18</td>
-<td align="left">将18送入寄存器AX</td>
-<td align="left">AX=18</td>
-</tr>
-<tr>
-<td align="left">mov ah, 78</td>
-<td align="left">将78送入寄存器AH</td>
-<td align="left">AH=18</td>
-</tr>
-<tr>
-<td align="left">add ax,  8</td>
-<td align="left">将寄存器AX中的数值加上8</td>
-<td align="left">AX=AX+8</td>
-</tr>
-<tr>
-<td align="left">mov ax, bx</td>
-<td align="left">将寄存器BX中的数据送入寄存器AX</td>
-<td align="left">AX=BX</td>
-</tr>
-<tr>
-<td align="left">add ax, bx</td>
-<td align="left">将AX和BX中的数值相加，结果存在AX中</td>
-<td align="left">AX=AX+BX</td>
-</tr>
-<tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-</tbody></table>
-<p>在进行数据传送或运算时，要注意指令的两个操作对象的位数应当是一致的。</p>
-<h4 id="2-4-物理地址"><a href="#2-4-物理地址" class="headerlink" title="2.4 物理地址"></a>2.4 物理地址</h4><p>CPU访问内存单元时，要给出内存单元的地址。所有构成内存单元的存储空间是一个一维的线性空间，每个内存单元在这个空间中都有唯一的地址，这个地址为物理地址。</p>
-<h4 id="2-5-16位结构的CPU"><a href="#2-5-16位结构的CPU" class="headerlink" title="2.5 16位结构的CPU"></a>2.5 16位结构的CPU</h4><p>16位结构描述了CPU下面的几个结构特性：</p>
-<ul>
-<li>运算器一次最多可以处理16位数据</li>
-<li>寄存器最大位宽为16位</li>
-<li>寄存器和运算器之间的通路为16位</li>
-</ul>
-<p>也就是说：8086内部一次性处理、传输、暂存的数据最大长度为16位。</p>
-<h4 id="2-6-8086CPU给出物理地址的方法"><a href="#2-6-8086CPU给出物理地址的方法" class="headerlink" title="2.6 8086CPU给出物理地址的方法"></a>2.6 8086CPU给出物理地址的方法</h4><p>8086CPU有20位地址总线，可以传送20位地址，具有1MB的寻址能力。8086CPU为16位结构，一次性处理、存储、暂存的地址为16位。</p>
-<p>8086CPU采用两个16位地址合成的方法来形成一个20位的物理地址，相关部件逻辑结构如图：</p>
-<div align=center>
-![8086CPU相关部件的逻辑结构图](../images/assembly_2_6.png)
-</div>
-
-<p>当8086CPU要读写内存时：</p>
-<ul>
-<li>CPU中的相关部件提供两个16位的地址，一个称为段地址，另一个被称为偏移地址</li>
-<li>段地址和偏移地址通过内部总线送入一个称为地址加法器的部件</li>
-<li>地址加法器通过内部总线将20位物理地址送入输入输出控制电路</li>
-<li>输入输出控制电路将20位物理地址送入地址总线</li>
-<li>20位物理地址被地址总线传送到存储器</li>
-</ul>
-<p>地址加法器采用<strong>物理地址=段地址x16+偏移地址</strong>的方法用段地址和偏移地址合成物理地址</p>
-<h4 id="2-7-“段地址x16-偏移地址-物理地址”的本质含义"><a href="#2-7-“段地址x16-偏移地址-物理地址”的本质含义" class="headerlink" title="2.7 “段地址x16+偏移地址=物理地址”的本质含义"></a>2.7 “段地址x16+偏移地址=物理地址”的本质含义</h4><p>“段地址x16+偏移地址=物理地址”的本质含义是：CPU在访问内存时，用一个基础地质（段地址x16）和一个相对于基础地质的偏移地址相加，给出内存单元的物理地址。更一般的说，8086CPU的这种寻址功能是“基础地址+偏移地址=物理地址”寻址模式的一种具体实现方案。</p>
-<h4 id="2-8-段的概念"><a href="#2-8-段的概念" class="headerlink" title="2.8 段的概念"></a>2.8 段的概念</h4><p>内存并没有分段，段的划分来自于CPU，由于8086CPU采用“基地址（段地址x16）+偏移地址=物理地址”的方式给出内存单元的物理地址，使得我们可以用分段的方式来管理内存。所以，在编程时可以根据需要，将若干地址连续的内存单元看作一个段，用段地址x16定位段的起始地址（基地址），用偏移地址定位段中的内存单元。需要注意两点：段地址x16必然是16的倍数，所以一个段的起始地址也一定是16的倍数；偏移地址为16位，16位地址的寻址能力为64KB，所以一个段的长度最大是64KB。</p>
-<h4 id="2-9-段寄存器"><a href="#2-9-段寄存器" class="headerlink" title="2.9 段寄存器"></a>2.9 段寄存器</h4><p>8086CPU有4个段寄存器：CS、DS、SS、ES。当8086CPU要访问内存时由这4个段寄存器提供内存单元的段地址。</p>
-<h4 id="2-10-CS和IP"><a href="#2-10-CS和IP" class="headerlink" title="2.10 CS和IP"></a>2.10 CS和IP</h4><p>CS和IP是8086CPU中最关键的寄存器，它们指示了CPU当前要读取指令的地址。CS为代码段寄存器，IP为指令寄存器。</p>
-<p>8086CPU中，任意时刻，CPU将CS：IP指向的内容当作指令执行</p>
-<div align=center>
-![8086CPU相关部件的逻辑结构图](../images/assembly_2_10.png)
-</div>
-
-<p>8086CPU的工作过程简要描述如下：</p>
-<ul>
-<li>从CS：IP指向的内存单元读取指令，读取的指令进入指令缓冲器</li>
-<li>IP=IP+读取指令的长度，从而指向下一条指令</li>
-<li>执行指令，转到步骤1，重复这个过程</li>
-</ul>
-<p>在8086CPU加电启动或复位后（即CPU刚开始工作时）CS和IP被设置为CS=FFFFH，IP=0000H，即8086CPU刚启动时，CPU从内存FFFF0H单元中读取指令执行，FFFF0H单元中的指令是8086CPU开机执行的第一条指令。</p>
-<p>在任何时候，CPU将CS、IP中的内容当作指令的段地址和偏移地址，用它们合成物理地址，到内存中读取指令、执行。</p>
-<h4 id="2-11-修改CS、IP的指令"><a href="#2-11-修改CS、IP的指令" class="headerlink" title="2.11 修改CS、IP的指令"></a>2.11 修改CS、IP的指令</h4><p>8086CPU大部分寄存器的值，都可以用mov指令来改变，mov指令被称为传送指令。但是，mov指令不能用于设置CS、IP的值，因为8086CPU没有提供这样的功能。</p>
-<p>若想同时修改CS、IP的内容，可用指令“jmp 段地址：偏移地址”完成，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jmp 2AE3:3 #执行后：CS&#x3D;2AE3H，IP&#x3D;0003H，CPU将从2AE33H处读取指令</span><br><span class="line">jmp 2:0B16 #执行后：CS&#x3D;0003H，IP&#x3D;0B16H，CPU将从00B46H处读取指令</span><br></pre></td></tr></table></figure>
-
-<p>jmp 段地址：偏移地址 指令的功能为：用指令中给出的段地址修改CS，偏移地址修改IP</p>
-<p>若想仅修改IP的内容，可用指令 “jmp 某一合法寄存器”完成，如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jmp ax, 指令执行前：ax&#x3D;1000H，CS&#x3D;2000H，IP&#x3D;0003H</span><br><span class="line">        指令执行后：ax&#x3D;1000H，CS&#x3D;2000H，IP&#x3D;1000H</span><br><span class="line">jmp bx，指令执行前：bx&#x3D;0B16H，CS&#x3D;2000H，IP&#x3D;0003H</span><br><span class="line">        指令执行后：ax&#x3D;0B16H，CS&#x3D;2000H，IP&#x3D;0B16H</span><br></pre></td></tr></table></figure>
-
-<p>指令“jmp 某一合法寄存器”的功能为：用寄存器中的值修改IP。jmp ax，在含以上类似于mov IP, ax这样的指令</p>
-<h4 id="2-12-代码段"><a href="#2-12-代码段" class="headerlink" title="2.12 代码段"></a>2.12 代码段</h4><p>将一段内存当作代码段，仅仅是我们在编程时的一种安排，CPU并不会由于这种安排，就自动地将我们定义的代码段中的指令当作指令来执行。CPU只认被CS：IP执行的内存单元中的内容为指令。</p>
-<p>要让CPU执行我们放在代码段中的指令，必须要将CS：IP指向所定义的代码段中的第一条指令的首地址。</p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
-<li>段地址在8086CPU的段寄存器中存放。当8086CPU要访问内存时，由段寄存器提供内存单元的段地址。8086CPU有4个段寄存器，其中CS用来存放指令的段地址</li>
-<li>CPU存放指令的段地址，IP存放指令的偏移地址。8086机中，任意时刻，CPU将CS：IP指向的内容当作指令执行</li>
-<li>8086CPU的工作过程<ul>
-<li>从CS：IP指向的内存单元读取指令，读取的指令进入指令缓冲器；</li>
-<li>IP指向下一条指令；</li>
-<li>执行指令。（转到步骤（1），重复这个过程）</li>
-</ul>
-</li>
-<li>8086CPU提供转移指令修改CS、IP的内容</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/11/2-register(CPU)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -559,7 +816,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/3-register(Memory)/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/1-basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -573,7 +830,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/04/3-register(Memory)/" class="post-title-link" itemprop="url">汇编语言-寄存器（内存访问）</a>
+            <a href="/2020/08/11/1-basic/" class="post-title-link" itemprop="url">汇编语言-基础知识</a>
         </h2>
 
         <div class="post-meta">
@@ -583,8 +840,15 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-04 21:59:13" itemprop="dateCreated datePublished" datetime="2020-08-04T21:59:13+08:00">2020-08-04</time>
+              <time title="Created: 2020-08-11 22:33:01" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:01+08:00">2020-08-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:00:00" itemprop="dateModified" datetime="2020-08-01T20:00:00+08:00">2020-08-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -606,265 +870,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="第三章-寄存器（内存访问）"><a href="#第三章-寄存器（内存访问）" class="headerlink" title="第三章 寄存器（内存访问）"></a>第三章 寄存器（内存访问）</h3><h4 id="3-1-内存中字的存储"><a href="#3-1-内存中字的存储" class="headerlink" title="3.1 内存中字的存储"></a>3.1 内存中字的存储</h4><p>CPU中，用16位寄存器来存储一个字。高8位存放高位字节，低8位存放低位字节。在内存中存储时，由于内存单元是字节单元（一个单元存放一个字节），则一个字要用两个地址连续的内存单元存放。这个字的低位字节存放在低地址单元中，高位字节存放在高地址单元中。</p>
-<p>字单元，即存放一个字型数据（16）位。由两个地址连续的内存单元组成。高地址内存单元存放字型数据的高位字节，低地址内存单元中存放字型数据的低位字节。</p>
-<h4 id="3-2-DS和-address"><a href="#3-2-DS和-address" class="headerlink" title="3.2 DS和[address]"></a>3.2 DS和[address]</h4><p>8080CPU中通常用DS寄存器来存放要访问数据的段地址。例如读取10000H单元中的内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov bx, 1000H</span><br><span class="line">mov ds, bx</span><br><span class="line">mov al, [0]</span><br></pre></td></tr></table></figure>
-
-<p>上面三条指令将10000H(1000:0)中的数据读到al中。</p>
-<p><code>mov al [0]</code>中“[…]”表示一个内存单元，”[…]”中的0表示内存单元的偏移地址。指令执行时，8086CPU自动取DS寄存器中的数据为内存单元的段地址。</p>
-<p>8086CPU不支持数据直接送入段寄存器操作，DS是一个段寄存器，所以mov ds, 1000H这条指令是非法的。所以只能用一个寄存器进行中转。</p>
-<h4 id="3-3-字的传送"><a href="#3-3-字的传送" class="headerlink" title="3.3 字的传送"></a>3.3 字的传送</h4><p>因为8086CPU是16位结构，有16位数据线，所以可以一次性传送16位数据。</p>
-<h4 id="3-4-mov、add、sub指令"><a href="#3-4-mov、add、sub指令" class="headerlink" title="3.4 mov、add、sub指令"></a>3.4 mov、add、sub指令</h4><p>mov指令可以有以下几种形式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov 寄存器, 数据        # mov ax,  8</span><br><span class="line">mov 寄存器, 寄存器      # mov ax,  bx</span><br><span class="line">mov 寄存器, 内存单元    # mov ax,  [0]</span><br><span class="line">mov 内存单元, 寄存器    # mov [0], ax</span><br><span class="line">mov 段寄存器, 寄存器    # mov ds,  ax</span><br><span class="line">mov 寄存器, 段寄存器    # mov ax,  ds</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-5-数据段"><a href="#3-5-数据段" class="headerlink" title="3.5 数据段"></a>3.5 数据段</h4><p>对于8086CPU机，在编程时，可以根据需要将一组内存单元定义为一个段。我们可以将一组长度为N(N&lt;=64K)、地址连续、起始地址为16的倍数的内存单元当作专门存储数据的内存空间，从而定义一个数据段。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 123BH</span><br><span class="line">mov ds, ax          ;将123BH送入DS中，作为数据段的段地址</span><br><span class="line">mov al, 0           ;用al存放累加结果</span><br><span class="line">add al, [0]         ;将数据段第一个单元(偏移地址为0)中的数值加到al中</span><br><span class="line">add al, [1]         ;将数据段第一个单元(偏移地址为1)中的数值加到al中</span><br><span class="line">add al, [2]         ;将数据段第一个单元(偏移地址为2)中的数值加到al中</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-6-栈"><a href="#3-6-栈" class="headerlink" title="3.6 栈"></a>3.6 栈</h4><p>研究角度：栈是一种具有特殊访问方式的内存空间，有两个基本操作：入栈和出栈：LIFO（Last In First Out， 后进先出）。</p>
-<h4 id="3-7-CPU提供的栈机制"><a href="#3-7-CPU提供的栈机制" class="headerlink" title="3.7 CPU提供的栈机制"></a>3.7 CPU提供的栈机制</h4><p>当今的CPU中都有栈的设计。8086CPU也提供相关的指令来以栈的方式访问内存空间。基于8086CPU编程时，可以将一段内存当作栈来使用。</p>
-<p>8086CPU提供入栈和出栈的指令，最基本的两个是PUSH（入栈）和POP出栈。8086CPU的入栈和出栈操作都是以字为单位进行的。</p>
-<p>8086CPU中，段寄存器SS和寄存器SP，站定的段地址存放在SS中，偏移地址存放在SP中，任意时刻：SS:SP指向栈顶元素。push指令和pop指令执行时，CPU从SS和SP中得到栈顶的地址。</p>
-<p>执行push ax时，分以下两步完成：</p>
+          <h3 id="第一章-基础知识"><a href="#第一章-基础知识" class="headerlink" title="第一章 基础知识"></a>第一章 基础知识</h3><h4 id="机器语言"><a href="#机器语言" class="headerlink" title="机器语言"></a>机器语言</h4><p>机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。</p>
+<h4 id="汇编语言的产生"><a href="#汇编语言的产生" class="headerlink" title="汇编语言的产生"></a>汇编语言的产生</h4><p>汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">操作：寄存器BX的内容送到AX中</span><br><span class="line">机器指令：1000100111011000</span><br><span class="line">汇编指令：mov ax, bx</span><br></pre></td></tr></table></figure>
+<p>将汇编指令转换成机器指令的翻译程序就被称为编译器。</p>
+<h4 id="汇编语言的组成"><a href="#汇编语言的组成" class="headerlink" title="汇编语言的组成"></a>汇编语言的组成</h4><p>汇编语言由以下3类指令组成：</p>
 <ul>
-<li>SP=SP-2，SS:SP指向当前栈顶前面的单元，以当前栈顶前面的单元为新的栈顶</li>
-<li>将ax中的内容送入SS:SP指向的内存单元处，SS:SP此时指向新栈顶</li>
+<li>汇编指令：机器码的助记符，有对应的机器码</li>
+<li>伪指令：没有对应的机器码，由编译器执行，计算机并不执行</li>
+<li>其他符号：如+、-、*、/等，由编译器识别，没有对应的机器码。<br>汇编语言的核心是机器指令，它决定了汇编语言的特性</li>
 </ul>
-<p>执行popax时，分以下两步完成：</p>
-<ul>
-<li>将SS:SP指向的内存单元送入ax中</li>
-<li>SP=SP+2，SS:SP指向当前栈顶下面的单元，以当前栈顶下面的单元为新的栈顶</li>
-</ul>
-<h4 id="3-8-栈顶超界问题"><a href="#3-8-栈顶超界问题" class="headerlink" title="3.8 栈顶超界问题"></a>3.8 栈顶超界问题</h4><p>8086CPU不保证我们对栈的操作不会越界。8086CPU只知道栈顶在何处(由SS:SP指示)，而不知道我们安排的站空间多大。8068CPU的工作机理：它只考虑当前的情况：当前的栈顶在何处、当前要执行的指令是哪一条。</p>
-<p>我们在编程时要注意栈顶超界问题，根据可能用到的最大栈空间来安排栈的大小。防止入栈和出栈操作导致的栈越界。</p>
-<h4 id="3-9-push、pop指令"><a href="#3-9-push、pop指令" class="headerlink" title="3.9 push、pop指令"></a>3.9 push、pop指令</h4><p>push和pop指令可以在寄存器和内存之间传送数据。push和pop指令可以是以下形式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push 寄存器&#x2F;段寄存器&#x2F;内存单元     ;可以将一个寄存器&#x2F;段寄存器&#x2F;内存单元中的数据入栈</span><br><span class="line">pop 寄存器&#x2F;段寄存器&#x2F;内存单元      ;出栈，用一个寄存器&#x2F;段寄存器&#x2F;内存单元收出栈的数据</span><br></pre></td></tr></table></figure>
-<p>指令执行时，CPU要知道内存单元的地址，可以在push/pop指令中给出内存单元的偏移地址，段地址在指令执行时，CPU从ds中获得</p>
-<p>push、pop实质上是一种内存传送指令，可以在寄存器和内存之间传送数据，与mov指令不同的是，push和pop指令访问的内存单元的地址不是在指令中给出的，而是由SS:SP指出的。同时，push和pop指令还要改变SP中的内容。</p>
-<p>push和pop指令不同于mov指令的地方在于：CPU执行mov指令只需要一步操作(传送);执行push、pop指令需要两部操作。执行push时，CPU的两部操作：先改变SP，后向SS:SP处传送数据。执行pop时，CPU先读取SS:SP处的数据，后改变SP。</p>
-<p>push，pop等栈操作指令，修改的只是SP。也就是说，栈顶的变化范围最大为：0~FFFFH。</p>
-<h4 id="3-10-栈段"><a href="#3-10-栈段" class="headerlink" title="3.10 栈段"></a>3.10 栈段</h4><p>8086机中，根据需要将一组内存单元定义为一个段。我们可以将长度为N（N&lt;=64K）的一组地址连续、起始地址为16的倍数的内存单元当作栈空间用，从而定义一个栈段</p>
-<h4 id="段的描述"><a href="#段的描述" class="headerlink" title="段的描述"></a>段的描述</h4><p>我们可以将一段内存定义为一个段，用一个段地址指示段，用偏移地址方位段内的单元。这完全是我们自己的安排。</p>
-<ul>
-<li>用一个段存放数据，则将它定义为“数据段”</li>
-<li>用一个段存放代码，则将它定义为“代码段”</li>
-<li>用一个段存放栈，则将它定义为“栈段”</li>
-</ul>
-<p>对于数据段，将它的段地址放在DS中，用mov、add、sub等访问内存单元的指令时，CPU就将我们定义的数据段中的内容当作数据来访问</p>
-<p>对于代码段，将它的段地址放在CS中，将段中的第一条指令的偏移地址放在IP中，这样CPU就将执行我们定义的代码段中的指令</p>
-<p>对于栈段，将它的段地址放在SS中，将栈顶单元的偏移地址放在SP中，这样CPU在需要进行栈操作时，比如执行push、pop指令等，就将我们定义的栈段当作栈空间来使用</p>
-<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
-<li><p>字在内存中存储时，要用两个连续的内存单元来存放，字的低位字节存放在低地址单元中，高位字节存放在高地址单元中</p>
-</li>
-<li><p>用mov指令访问内存单元，可以在mov指令中只给出单元的偏移地址，此时，段地址默认在DS寄存器中</p>
-</li>
-<li><p>[address]表示一个偏移地址为address的内存单元</p>
-</li>
-<li><p>在内存和寄存器之间传送字型数据时，高地址单元和高8位寄存器、低地址单元和低8位寄存器相对应</p>
-</li>
-<li><p>mov、add、sub是具有两个操作对象的指令。jmp是具有一个操作对象的指令</p>
-</li>
-<li><p>8086CPU提供了栈操作机制，方案如下：</p>
-<ul>
-<li>在SS、SP中存放栈顶的段地址和偏移地址</li>
-<li>提供入栈和出栈指令，它们根据SS:SP指示的地址，按照栈的方式访问内存单元</li>
-</ul>
-</li>
-<li><p>push指令的执行步骤：2）SP=SP-2；2）向SS:SP指向的字单元中送入数据</p>
-</li>
-<li><p>pop指令的执行步骤：2）从SS:SP指向的字单元中读取数据；2）SP=SP+2</p>
-</li>
-<li><p>任意时刻，SS:SP指向栈顶元素</p>
-</li>
-<li><p>8086CPU只记录栈顶，栈空间大小需要我们自己管理</p>
-</li>
-<li><p>用栈来暂存以后需要回复的寄存器的内容时，寄存器出栈的顺序和入栈的顺序相反</p>
-</li>
-<li><p>push、pop实质上是一种内存传送指令</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/4-first-program/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/04/4-first-program/" class="post-title-link" itemprop="url">汇编语言-第一个程序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-04 21:59:08" itemprop="dateCreated datePublished" datetime="2020-08-04T21:59:08+08:00">2020-08-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第四章-第1个程序"><a href="#第四章-第1个程序" class="headerlink" title="第四章 第1个程序"></a>第四章 第1个程序</h3><h4 id="4-1-一个源程序从写出到执行的过程"><a href="#4-1-一个源程序从写出到执行的过程" class="headerlink" title="4.1 一个源程序从写出到执行的过程"></a>4.1 一个源程序从写出到执行的过程</h4><p>一个汇编语言程序从写出到最终执行的简要过程如下：</p>
-<ul>
-<li>第一步 编写汇编源程序，这一步工作的结果是产生了一个存储源程序的文本文件</li>
-<li>第二步 对源程序进行编译链接，使用编译程序对源文件编译，产生目标文件；再用连接程序对目标文件进行链接，生成可在操作系统中运行的可执行文件。可执行文件中包含两部分内容<ul>
-<li>程序和数据</li>
-<li>相关的描述信息</li>
-</ul>
-</li>
-<li>第三步 执行可执行文件中的程序</li>
-</ul>
-<h4 id="4-2-源程序"><a href="#4-2-源程序" class="headerlink" title="4.2 源程序"></a>4.2 源程序</h4><p>程序4.1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line"></span><br><span class="line">codesg segment</span><br><span class="line"></span><br><span class="line">start: mov ax, 0123H</span><br><span class="line">       mov bx, 0456H</span><br><span class="line">       add ax, bx</span><br><span class="line">       add ax, ax</span><br><span class="line"></span><br><span class="line">       mov ax, 4c00H</span><br><span class="line">       int 21H</span><br><span class="line"></span><br><span class="line">codesg ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>在汇编语言中，包含两种指令：汇编指令和伪指令。汇编指令是有对应的机器码的指令，最终为CPU所执行。而伪指令没有对应的机器指令，最终不被CPU所执行，而是由编译器根据伪指令来进行相关的编译工作。</p>
-<p>（1）segment和ends是一对成对使用的伪指令，这是在写可被编译器编译的汇编程序时，必须要用到的一对伪指令。segment和ends的功能是定义一个段，segment说明一个段开始，end说明一个段结束。一个段必须有一个名称来标识。格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 其中XXX为段名</span><br><span class="line">XXX segment     ; 定义一个段，段名为XXX，这个段从此开始</span><br><span class="line">XXX ends        ; 名称为XXX的段到此结束</span><br></pre></td></tr></table></figure>
-
-<p>一个汇编程序是由多个段组成的，这些段被用来存放代码、数据或当作栈空间来使用。一个源程序中所有将被计算机所处理的信息：指令、数据、栈被划分到了不同的段中</p>
-<p>一个有意义的汇编程序中至少要有一个段，这个段用来存放代码</p>
-<p>（2）end是一个汇编程序的结束标记。如果碰到了伪指令end，就结束对源程序的编译。所以程序结尾处要加上伪指令end，否则编译器无法知道程序何时结束 </p>
-<p>（3）assume这条伪指令的含义为“假设”，它假设某一段寄存器和程序中的某一个用segment…ends定义的段相关联。</p>
-<table>
-<thead>
-<tr>
-<th>目的</th>
-<th>相关指令</th>
-<th>指令性质</th>
-<th>指令执行者</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>通知编译器一个段结束</td>
-<td>段名ends</td>
-<td>伪指令</td>
-<td>编译时，由编译器执行</td>
-</tr>
-<tr>
-<td>通知编译器程序结束</td>
-<td>end</td>
-<td>伪指令</td>
-<td>编译时，由编译器执行</td>
-</tr>
-<tr>
-<td>程序返回</td>
-<td>mov ax, 4c00H int 21H</td>
-<td>汇编指令</td>
-<td>执行时，由CPU执行</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/04/5-[bx]andloop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/04/5-%5Bbx%5Dandloop/" class="post-title-link" itemprop="url">汇编语言</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-04 21:59:01" itemprop="dateCreated datePublished" datetime="2020-08-04T21:59:01+08:00">2020-08-04</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第五章-bx-和loop指令"><a href="#第五章-bx-和loop指令" class="headerlink" title="第五章 [bx]和loop指令"></a>第五章 [bx]和loop指令</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/11/1-basic/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -945,7 +968,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第五章 [bx]和loop指令[bx]和[0]有些类似，[0]表示内存单元，它的偏移地址是0。要完整的描述一个内存单元，需要两种信息：（1）内存单元的地址；（2）内存单元的长度（类型）。[bx]可以表示一个内存单元，它的偏移地址在bx中，比如以下指令： 1mov ax, [bx]    # 将一个内存单元的内容送入ax，这个内存单元的长度为2（字单元），存放一个字，偏移地址在bx中，段地址在ds中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言-[bx]和loop指令">
+<meta property="og:url" content="http://yoursite.com/2020/08/11/5-[bx]-and-loop/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="第五章 [bx]和loop指令[bx]和[0]有些类似，[0]表示内存单元，它的偏移地址是0。要完整的描述一个内存单元，需要两种信息：（1）内存单元的地址；（2）内存单元的长度（类型）。[bx]可以表示一个内存单元，它的偏移地址在bx中，比如以下指令： 1mov ax, [bx]    # 将一个内存单元的内容送入ax，这个内存单元的长度为2（字单元），存放一个字，偏移地址在bx中，段地址在ds中">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-11T14:33:57.355Z">
+<meta property="article:modified_time" content="2020-08-01T12:50:00.000Z">
+<meta property="article:author" content="江湖渔民">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/08/11/5-[bx]-and-loop/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>汇编语言-[bx]和loop指令 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/5-[bx]-and-loop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          汇编语言-[bx]和loop指令
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-11 22:33:57" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:57+08:00">2020-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:50:00" itemprop="dateModified" datetime="2020-08-01T20:50:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="第五章-bx-和loop指令"><a href="#第五章-bx-和loop指令" class="headerlink" title="第五章 [bx]和loop指令"></a>第五章 [bx]和loop指令</h3><p>[bx]和[0]有些类似，[0]表示内存单元，它的偏移地址是0。要完整的描述一个内存单元，需要两种信息：（1）内存单元的地址；（2）内存单元的长度（类型）。[bx]可以表示一个内存单元，它的偏移地址在bx中，比如以下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]    # 将一个内存单元的内容送入ax，这个内存单元的长度为2（字单元），存放一个字，偏移地址在bx中，段地址在ds中。</span><br></pre></td></tr></table></figure>
+
+<p>后续课程中：用“()”表示一个寄存器或一个内存单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(ax)            # 表示ax中的内容</span><br><span class="line">(al)            # 表示al中的内容</span><br><span class="line">(20000H)        # 表示内存20000H单元的内容</span><br><span class="line">((ds)*16+(bx))  # 表示ds中的内容为ADRR1，bx中的内容为ADRR2，ADRR1x16+ADRR2表示内存ADRR1:ADRR2单元的内容</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h4 id="bx"><a href="#bx" class="headerlink" title="[bx]"></a>[bx]</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
+<p>功能：bx中存放偏移地址EA，段地址SA默认在ds中，将SA:EA处的数据送入ax中。即：(ax)=((ds)*16+(bx))</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov [bx], ax</span><br></pre></td></tr></table></figure>
+<p>功能：bx中存放偏移地址EA，段地址SA默认在ds中，将ax处的数据送入SA:EA中。即：((ds)*16+(bx))=(ax)</p>
+<h4 id="Loop指令"><a href="#Loop指令" class="headerlink" title="Loop指令"></a>Loop指令</h4><p>loop指令的格式：loop标号，CPU执行loop指令时，要进行两步操作：（1）<code>(cx)=(cx)-1</code>；（2）判断cx中的值，不为零则转至标号处执行指令，如果为零则向下执行。<strong>通常</strong>用loop指令来实现循环功能，cx中存放循环次数。</p>
+<h4 id="在Debug中跟踪用loop指令实现的循环程序"><a href="#在Debug中跟踪用loop指令实现的循环程序" class="headerlink" title="在Debug中跟踪用loop指令实现的循环程序"></a>在Debug中跟踪用loop指令实现的循环程序</h4><h4 id="Debug和汇编编译器masm对指令的不同处理"><a href="#Debug和汇编编译器masm对指令的不同处理" class="headerlink" title="Debug和汇编编译器masm对指令的不同处理"></a>Debug和汇编编译器masm对指令的不同处理</h4><p>在Debug中，<code>mov ax [0]</code>表示将ds:0处的数据送入ax中，在汇编源程序中，<code>mov ax, [0]</code>被编译器当作指令<code>mov ax, 0</code>处理。</p>
+<p>源程序中可使用的方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 2000h</span><br><span class="line">mov ds, ax      ;段地址2000h送入ds</span><br><span class="line">mov bx, 0       ;偏移地址0送入bx</span><br><span class="line">mov al, [bx]    ;ds:bx单元中的数据送入al</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 2000h</span><br><span class="line">mov ds, ax</span><br><span class="line">mov al, ds:[0]</span><br></pre></td></tr></table></figure>
+
+<p>在汇编源程序中，指令访问一个内存单元，则在指令中必须用<code>[...]</code>表示内存单元，如果在<code>[]</code>里用一个常量<code>idata</code>直接给出内存单元的偏移地址，则在<code>[]</code>的前面需要显示的给出段地址所在的寄存器，否则masm将把指令中的<code>[idata]</code>解释为<code>idata</code></p>
+<p>如果在<code>[]</code>里使用寄存器，比如bx，间接的给出内存单元的偏移地址，则段地址默认在ds中。当然，也可以显式的给出段地址所在的段寄存器。</p>
+<h4 id="loop和-bx-的联合应用"><a href="#loop和-bx-的联合应用" class="headerlink" title="loop和[bx]的联合应用"></a>loop和[bx]的联合应用</h4><p>问题：计算ffff:0-ffff:b单元中的数据的和，结果存储在dx中。</p>
+<p>思考：</p>
+<ul>
+<li>运算后的结果是否会超出dx的表示范围？</li>
+<li>是否能将ffff:0-ffff:b中的数据直接累加到dx中？</li>
+<li>能否将ffff:0-ffff:b中的数据累加到dl中，并设置(dh)=0，从而实现累加到dx中的目标？</li>
+<li>到底怎样将ffff:0-ffff:b中的8位数据累加到16位寄存器dx中？</li>
+</ul>
+<p>方法：</p>
+<ul>
+<li>(dx)=(dx)+内存中的8位数据</li>
+<li>(dl)=(dl)+内存中的8位数据</li>
+</ul>
+<p>第一种方法的问题是：运算对象的类型不匹配，第二种方法的问题是：运算结果有可能越界</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">    mov ax, 0ffffh</span><br><span class="line">    mov ds, ax</span><br><span class="line"></span><br><span class="line">    mov bx, 0</span><br><span class="line">    mov dx, 0</span><br><span class="line">    mov cx, 0</span><br><span class="line"></span><br><span class="line">s:  mov al, [bx]</span><br><span class="line">    mov ah, 0</span><br><span class="line">    add dx, ax</span><br><span class="line">    inc bx</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h4 id="段前缀"><a href="#段前缀" class="headerlink" title="段前缀"></a>段前缀</h4><p>指令<code>mov ax, [bx]</code>中内存单元的偏移地址由bx给出，而段地址默认在ds中，可以在访问内存单元的指令中显示的给出内存单元的段地址所在的段寄存器。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov ax, ds:[bx]</span><br><span class="line">mov ax, cs:[bx]</span><br><span class="line">mov ax, ss:[bx]</span><br><span class="line">mov ax, es:[bx]</span><br><span class="line">mov ax, cs:[0]</span><br></pre></td></tr></table></figure>
+
+<p>这些出现在访问内存单元指令中，用于显示指明内存单元段寄存器，在汇编语言中被称为<strong>段前缀</strong></p>
+<h4 id="一段安全的空间"><a href="#一段安全的空间" class="headerlink" title="一段安全的空间"></a>一段安全的空间</h4><p>在8086模式中，随意向一段内存空间写入内容是很危险的，因为这段空间中可能存放着重要的系统数据或者代码。所以在不能确定一段内存空间中是否存在着重要的数据或代码的时候，不能随意向其中写入数据。</p>
+<h4 id="段前缀的使用"><a href="#段前缀的使用" class="headerlink" title="段前缀的使用"></a>段前缀的使用</h4><p>问题：将内存单元ffff:0-ffff:b中的数据拷贝到0:200-020b单元中</p>
+<p>思考：</p>
+<ul>
+<li>0:200-0:20b单元等同于0020:0-0020:b单元，它们描述的是同一段内存空间</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">    mov ax, 0ffffh</span><br><span class="line">    mov ds, ax</span><br><span class="line">    mov ax, 0020h</span><br><span class="line">    mov es, ax</span><br><span class="line"></span><br><span class="line">    mov bx, 0</span><br><span class="line">    mov cx 12</span><br><span class="line"></span><br><span class="line">s:  mov dl, [bx]</span><br><span class="line">    mov es:[bx], dl</span><br><span class="line">    inc bx</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/11/4-first-program/" rel="prev" title="汇编语言-第一个程序">
+      <i class="fa fa-chevron-left"></i> 汇编语言-第一个程序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/11/linux-nc/" rel="next" title="Linux-nc命令详解">
+      Linux-nc命令详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第五章-bx-和loop指令"><span class="nav-number">1.</span> <span class="nav-text">第五章 [bx]和loop指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bx"><span class="nav-number">1.1.</span> <span class="nav-text">[bx]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Loop指令"><span class="nav-number">1.2.</span> <span class="nav-text">Loop指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在Debug中跟踪用loop指令实现的循环程序"><span class="nav-number">1.3.</span> <span class="nav-text">在Debug中跟踪用loop指令实现的循环程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debug和汇编编译器masm对指令的不同处理"><span class="nav-number">1.4.</span> <span class="nav-text">Debug和汇编编译器masm对指令的不同处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loop和-bx-的联合应用"><span class="nav-number">1.5.</span> <span class="nav-text">loop和[bx]的联合应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#段前缀"><span class="nav-number">1.6.</span> <span class="nav-text">段前缀</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一段安全的空间"><span class="nav-number">1.7.</span> <span class="nav-text">一段安全的空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#段前缀的使用"><span class="nav-number">1.8.</span> <span class="nav-text">段前缀的使用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">江湖渔民</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/code2old" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;code2old" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1814593561@qq.com" title="E-Mail → mailto:1814593561@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江湖渔民</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
