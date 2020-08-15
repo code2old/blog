@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/12/8-two-question-about-data-handle/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/1-basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,97 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/12/8-two-question-about-data-handle/" class="post-title-link" itemprop="url">汇编语言-数据处理的两个基本问题</a>
+            <a href="/assembly/1-basic/" class="post-title-link" itemprop="url">汇编语言-基础知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-15 23:06:26" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:26+08:00">2020-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:00:00" itemprop="dateModified" datetime="2020-08-01T20:00:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第一章-基础知识"><a href="#第一章-基础知识" class="headerlink" title="第一章 基础知识"></a>第一章 基础知识</h3><h4 id="机器语言"><a href="#机器语言" class="headerlink" title="机器语言"></a>机器语言</h4><p>机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。</p>
+<h4 id="汇编语言的产生"><a href="#汇编语言的产生" class="headerlink" title="汇编语言的产生"></a>汇编语言的产生</h4><p>汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">操作：寄存器BX的内容送到AX中</span><br><span class="line">机器指令：1000100111011000</span><br><span class="line">汇编指令：mov ax, bx</span><br></pre></td></tr></table></figure>
+<p>将汇编指令转换成机器指令的翻译程序就被称为编译器。</p>
+<h4 id="汇编语言的组成"><a href="#汇编语言的组成" class="headerlink" title="汇编语言的组成"></a>汇编语言的组成</h4><p>汇编语言由以下3类指令组成：</p>
+<ul>
+<li>汇编指令：机器码的助记符，有对应的机器码</li>
+<li>伪指令：没有对应的机器码，由编译器执行，计算机并不执行</li>
+<li>其他符号：如+、-、*、/等，由编译器识别，没有对应的机器码。<br>汇编语言的核心是机器指令，它决定了汇编语言的特性</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/assembly/1-basic/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/9-jmp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/assembly/9-jmp/" class="post-title-link" itemprop="url">汇编语言-转移指令的原理</a>
         </h2>
 
         <div class="post-meta">
@@ -185,8 +275,167 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-08-12 23:16:22 / Modified: 21:50:00" itemprop="dateCreated datePublished" datetime="2020-08-12T23:16:22+08:00">2020-08-12</time>
+              <time title="Created: 2020-08-15 23:06:21 / Modified: 21:44:00" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:21+08:00">2020-08-15</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第九章-转移指令的原理"><a href="#第九章-转移指令的原理" class="headerlink" title="第九章 转移指令的原理"></a>第九章 转移指令的原理</h3><p>可以修改IP，或同事修改CS和IP的指令统称为转移指令。概括的讲，转移指令就是可以控制CPU执行内存中某处的代码的指令。</p>
+<p>8086 CPU的转移行为有以下几类：</p>
+<ul>
+<li>只修改IP时，称为段内转移，比如：<code>jmp ax</code></li>
+<li>同时修改CS和IP时，称为段间转移，比如：<code>jmp 1000:0</code></li>
+</ul>
+<p>由于转移指令对IP修改范围不同，段内转移又分为：短转移和近转移</p>
+<ul>
+<li>短转移IP的修改范围为-128~127.</li>
+<li>近转移IP的修改范围为-32768~32767.</li>
+</ul>
+<p>8086 CPU的转移指令分为以下几类：</p>
+<ul>
+<li>无条件转移指令（如：jmp）</li>
+<li>条件转移指令</li>
+<li>循环指令（如：loop）</li>
+<li>过程</li>
+<li>中断</li>
+</ul>
+<h4 id="操作符offset"><a href="#操作符offset" class="headerlink" title="操作符offset"></a>操作符offset</h4><p>操作符offset在汇编语言中是由编译器处理的符号，它的功能是取得标号的偏移地址。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax, offset start;   ;相当于mov ax, 0</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov ax, offset s        ;相当于mov ax, 3</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><code>mov ax, offset start</code>相当于指令<code>mov ax, 0</code>，因为start是代码段中的标号，它所标记的指令是代码段中的第一条指令，偏移地址为0；<code>mov ax, offset s</code>相当于<code>mov ax, 3</code>，因为s是代码段中的标号，它所标记的指令是代码段中的第二条指令，第一条指令的长度为3字节，则s的偏移地址为3</p>
+<h4 id="jmp指令"><a href="#jmp指令" class="headerlink" title="jmp指令"></a>jmp指令</h4><p>jmp为无条件转移指令，可以只修改IP，也可以同时修改CS和IP</p>
+<p>jmp指令要给出两种信息：</p>
+<ul>
+<li>转移的目的地址</li>
+<li>转移的举例（段间转移、段内短转移、段内近转移）</li>
+</ul>
+<p>不同的给出目的地址的方法，和不同的转移位置，对应不同格式的jmp指令。</p>
+<h4 id="依据位移进行转移的jmp指令"><a href="#依据位移进行转移的jmp指令" class="headerlink" title="依据位移进行转移的jmp指令"></a>依据位移进行转移的jmp指令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmp short 标号 ;(转移标号处执行指令)</span><br></pre></td></tr></table></figure>
+
+<p>这种格式的jmp指令实现的是段内短转移，它对IP的修改范围在-128~127，也就是说，它向前转移时可以最多越过128字节，向后转移最多越过127字节。jmp指令中的short符号说明指令进行的是短转移。jmp指令中的标号是代码段中的标号，指明了指令要转移的目的地，转移指令结束后，CS:IP应该指向标号处的指令。</p>
+<p><code>jmp short 标号</code>指令对应的机器码中，并不包含转移的目的地址，而包含的是转移的位移。这个位移，是编译器根据汇编指令中的标号计算出来的。</p>
+<p>实际上，指令<code>jmp short 标号</code>的功能为：<code>(IP)=(IP)+8位位移</code></p>
+<ul>
+<li>8位位移 = 标号处的地址-jmp指令后的第一个字节的地址</li>
+<li>short指明此处的位移为8位位移</li>
+<li>8位位移的范围为-128~127，用补码表示</li>
+<li>8位位移由编译程序在编译时算出</li>
+</ul>
+<p>还有一种指令与<code>jmp short 标号</code>类似：<code>jmp near ptr标号</code>，它实现的是段内近转移，只不过是16位的位移长度</p>
+<h4 id="转移的目的地址在指令中的jmp指令"><a href="#转移的目的地址在指令中的jmp指令" class="headerlink" title="转移的目的地址在指令中的jmp指令"></a>转移的目的地址在指令中的jmp指令</h4><p><code>jmp far ptr 标号</code>实现的是段间转移，又称为远转移，功能如下：</p>
+<ul>
+<li>(CS)=标号所在段的段地址；(IP)=标号在段中的偏移地址</li>
+<li>far ptr指令用标号的段地址和偏移地址修改CS:IP</li>
+</ul>
+<h4 id="转移地址在寄存器中的jmp指令"><a href="#转移地址在寄存器中的jmp指令" class="headerlink" title="转移地址在寄存器中的jmp指令"></a>转移地址在寄存器中的jmp指令</h4><p>指令格式：jmp 16位寄存器<br>功能：(IP)=(16位寄存器)</p>
+<h4 id="转移地址在内存中的jmp指令"><a href="#转移地址在内存中的jmp指令" class="headerlink" title="转移地址在内存中的jmp指令"></a>转移地址在内存中的jmp指令</h4><p>转移地址在内存中的jmp指令有两种格式：</p>
+<ul>
+<li>jmp word ptr 内存单元地址(段内转移)；功能：从内存单元地址处开始存放着一个字，是转移的目的偏移地址</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 0123H</span><br><span class="line">mov ds:[0], ax</span><br><span class="line">jmp word ptr ds:[0]</span><br><span class="line">;或者</span><br><span class="line">mov ax, 0123H</span><br><span class="line">mov [bx], ax</span><br><span class="line">jmp word ptr [bx]</span><br></pre></td></tr></table></figure>
+
+<p>执行后：(IP)=0123H</p>
+<ul>
+<li>jmp dword ptr 内存单元地址(段间转移)；功能：从内存单元地址处开始存放着两个字，高地址处的字是转移的目的段地址，低地址处是转移的目的偏移地址</li>
+<li>(CS)=(内存单元+2)；(IP)=(内存单元地址)</li>
+</ul>
+<p>内存单元地址可用寻址方式的任一格式给出，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 0123H</span><br><span class="line">mov ds:[0], ax</span><br><span class="line">mov word ptr ds:[2], 0</span><br><span class="line">jmp dword ptr ds:[0]</span><br><span class="line">;或者</span><br><span class="line">mov ax, 0123H</span><br><span class="line">mov [bx], ax</span><br><span class="line">mov word ptr [bx+2], 0</span><br><span class="line">jmp dword ptr [bx]</span><br></pre></td></tr></table></figure>
+
+<p>执行后，(CS)=0, (IP)=123H，CS:IP指向0000:0123</p>
+<h4 id="jczx指令"><a href="#jczx指令" class="headerlink" title="jczx指令"></a>jczx指令</h4><p>jcxz指令为有条件转移指令，所有的有条件转移指令都是短转移，在对应的机器码中包含转移的位移，而不是目的地址。对IP的修改范围都为：-128~127</p>
+<p>指令格式：jcxz 标号 （如果(cx)=0，转移到标号处执行）；<br>操作：当(cx)=0时，(IP)=(IP)+8位位移。</p>
+<ul>
+<li>8位位移=标号处的地址-jcxz指令后的第一个字节的地址；</li>
+<li>8位位移的范围为-128~127，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出</li>
+</ul>
+<p>当(cx)!=0时，什么也不做（程序向下执行）</p>
+<p><code>jcxz 标号</code> 功能相当于 <code>if((cx)==0) jmp short 标号</code>;</p>
+<h4 id="loop指令"><a href="#loop指令" class="headerlink" title="loop指令"></a>loop指令</h4><p>loop指令为循环指令，所有的循环指令都是短转移，在对应的机器码中包含转移的位移，而不是目的地址。对应IP的修改范围都为-128~127</p>
+<p>指令格式：loop 标号（(cx)=(cx)-1,如果(cx)!=0，转移到标号处执行）；<br>操作：(cx)=(cx-1)；如果(cx)!=0，(IP)=(IP)+8位位移。</p>
+<ul>
+<li>8位位移=标号处的地址-loop指令后的第一个字节的地址；</li>
+<li>8位位移的范围为-128~127，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出</li>
+</ul>
+<p>当(cx)!=0时，什么也不做（程序向下执行）</p>
+<p><code>jcxz 标号</code> 功能相当于 <code>(cx)--; if((cx)!=0) jmp short 标号</code>;</p>
+<h4 id="根据位移进行转移的意义"><a href="#根据位移进行转移的意义" class="headerlink" title="根据位移进行转移的意义"></a>根据位移进行转移的意义</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jmp short 标号</span><br><span class="line">jmp near ptr 标号</span><br><span class="line">jcxz 标号</span><br><span class="line">loop 标号</span><br></pre></td></tr></table></figure>
+
+<p>它们对IP的修改是根据转移目的地址和转移起始地址之间的位移来进行的。在它们对应的机器码中不包含转移的目的地址，而包含的是到目的地址的位移。这种设计，方便了程序段在内存中的浮动装配。</p>
+<h4 id="编译器对转移位移超界的检测"><a href="#编译器对转移位移超界的检测" class="headerlink" title="编译器对转移位移超界的检测"></a>编译器对转移位移超界的检测</h4><p>根据位移进行转移的指令，转移范围受到转移位移的限制。如果程序转移范围超界的问题，编译时，编译器将报错。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/8-two-question-about-data-handle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/assembly/8-two-question-about-data-handle/" class="post-title-link" itemprop="url">汇编语言-数据处理的两个基本问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-15 23:06:21" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:21+08:00">2020-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-12 21:50:00" itemprop="dateModified" datetime="2020-08-12T21:50:00+08:00">2020-08-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -277,7 +526,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/12/9-jmp/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/7-address-locate/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -291,7 +540,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/12/9-jmp/" class="post-title-link" itemprop="url">汇编语言-转移指令的原理</a>
+            <a href="/assembly/7-address-locate/" class="post-title-link" itemprop="url">汇编语言-更灵活的定位内存地址的方法</a>
         </h2>
 
         <div class="post-meta">
@@ -300,85 +549,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-12 23:15:39 / Modified: 21:44:00" itemprop="dateCreated datePublished" datetime="2020-08-12T23:15:39+08:00">2020-08-12</time>
+              <time title="Created: 2020-08-15 23:06:21" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:21+08:00">2020-08-15</time>
             </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第九章-转移指令的原理"><a href="#第九章-转移指令的原理" class="headerlink" title="第九章 转移指令的原理"></a>第九章 转移指令的原理</h3><p>可以修改IP，或同事修改CS和IP的指令统称为转移指令。概括的讲，转移指令就是可以控制CPU执行内存中某处的代码的指令。</p>
-<p>8086 CPU的转移行为有以下几类：</p>
-<ul>
-<li>只修改IP时，称为段内转移，比如：<code>jmp ax</code></li>
-<li>同时修改CS和IP时，称为段间转移，比如：<code>jmp 1000:0</code></li>
-</ul>
-<p>由于转移指令对IP修改范围不同，段内转移又分为：短转移和近转移</p>
-<p>* </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/7-address-locate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/11/7-address-locate/" class="post-title-link" itemprop="url">汇编语言-更灵活的定位内存地址的方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-11 21:50:00" itemprop="dateModified" datetime="2020-08-11T21:50:00+08:00">2020-08-11</time>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-08-11 22:36:55 / Modified: 21:50:00" itemprop="dateCreated datePublished" datetime="2020-08-11T22:36:55+08:00">2020-08-11</time>
-            </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -452,7 +632,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/6-multi-segment/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/6-multi-segment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -466,7 +646,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/11/6-multi-segment/" class="post-title-link" itemprop="url">汇编语言-包含多个段的程序</a>
+            <a href="/assembly/6-multi-segment/" class="post-title-link" itemprop="url">汇编语言-包含多个段的程序</a>
         </h2>
 
         <div class="post-meta">
@@ -475,10 +655,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-11 22:36:28 / Modified: 20:50:00" itemprop="dateCreated datePublished" datetime="2020-08-11T22:36:28+08:00">2020-08-11</time>
+              <time title="Created: 2020-08-15 23:06:20" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:20+08:00">2020-08-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-11 20:50:00" itemprop="dateModified" datetime="2020-08-11T20:50:00+08:00">2020-08-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -541,7 +727,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/linux-nc/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/5-[bx]-and-loop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -555,7 +741,364 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/11/linux-nc/" class="post-title-link" itemprop="url">Linux-nc命令详解</a>
+            <a href="/assembly/5-%5Bbx%5D-and-loop/" class="post-title-link" itemprop="url">汇编语言-[bx]和loop指令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-15 23:06:20" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:20+08:00">2020-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:50:00" itemprop="dateModified" datetime="2020-08-01T20:50:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第五章-bx-和loop指令"><a href="#第五章-bx-和loop指令" class="headerlink" title="第五章 [bx]和loop指令"></a>第五章 [bx]和loop指令</h3><p>[bx]和[0]有些类似，[0]表示内存单元，它的偏移地址是0。要完整的描述一个内存单元，需要两种信息：（1）内存单元的地址；（2）内存单元的长度（类型）。[bx]可以表示一个内存单元，它的偏移地址在bx中，比如以下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]    # 将一个内存单元的内容送入ax，这个内存单元的长度为2（字单元），存放一个字，偏移地址在bx中，段地址在ds中。</span><br></pre></td></tr></table></figure>
+
+<p>后续课程中：用“()”表示一个寄存器或一个内存单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(ax)            # 表示ax中的内容</span><br><span class="line">(al)            # 表示al中的内容</span><br><span class="line">(20000H)        # 表示内存20000H单元的内容</span><br><span class="line">((ds)*16+(bx))  # 表示ds中的内容为ADRR1，bx中的内容为ADRR2，ADRR1x16+ADRR2表示内存ADRR1:ADRR2单元的内容</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/assembly/5-%5Bbx%5D-and-loop/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/4-first-program/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/assembly/4-first-program/" class="post-title-link" itemprop="url">汇编语言-第一个程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-15 23:06:20" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:20+08:00">2020-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:30:00" itemprop="dateModified" datetime="2020-08-01T20:30:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第四章-第1个程序"><a href="#第四章-第1个程序" class="headerlink" title="第四章 第1个程序"></a>第四章 第1个程序</h3><h4 id="一个源程序从写出到执行的过程"><a href="#一个源程序从写出到执行的过程" class="headerlink" title="一个源程序从写出到执行的过程"></a>一个源程序从写出到执行的过程</h4><p>一个汇编语言程序从写出到最终执行的简要过程如下：</p>
+<ul>
+<li>第一步 编写汇编源程序，这一步工作的结果是产生了一个存储源程序的文本文件</li>
+<li>第二步 对源程序进行编译链接，使用编译程序对源文件编译，产生目标文件；再用连接程序对目标文件进行链接，生成可在操作系统中运行的可执行文件。可执行文件中包含两部分内容<ul>
+<li>程序和数据</li>
+<li>相关的描述信息</li>
+</ul>
+</li>
+<li>第三步 执行可执行文件中的程序</li>
+</ul>
+<h4 id="源程序"><a href="#源程序" class="headerlink" title="源程序"></a>源程序</h4><p>程序4.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line"></span><br><span class="line">codesg segment</span><br><span class="line"></span><br><span class="line">start: mov ax, 0123H</span><br><span class="line">       mov bx, 0456H</span><br><span class="line">       add ax, bx</span><br><span class="line">       add ax, ax</span><br><span class="line"></span><br><span class="line">       mov ax, 4c00H</span><br><span class="line">       int 21H</span><br><span class="line"></span><br><span class="line">codesg ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/assembly/4-first-program/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/3-register(Memory)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/assembly/3-register(Memory)/" class="post-title-link" itemprop="url">汇编语言-寄存器（内存访问）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-15 23:06:20" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:20+08:00">2020-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:20:00" itemprop="dateModified" datetime="2020-08-01T20:20:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第三章-寄存器（内存访问）"><a href="#第三章-寄存器（内存访问）" class="headerlink" title="第三章 寄存器（内存访问）"></a>第三章 寄存器（内存访问）</h3><h4 id="内存中字的存储"><a href="#内存中字的存储" class="headerlink" title="内存中字的存储"></a>内存中字的存储</h4><p>CPU中，用16位寄存器来存储一个字。高8位存放高位字节，低8位存放低位字节。在内存中存储时，由于内存单元是字节单元（一个单元存放一个字节），则一个字要用两个地址连续的内存单元存放。这个字的低位字节存放在低地址单元中，高位字节存放在高地址单元中。</p>
+<p>字单元，即存放一个字型数据（16）位。由两个地址连续的内存单元组成。高地址内存单元存放字型数据的高位字节，低地址内存单元中存放字型数据的低位字节。</p>
+<h4 id="DS和-address"><a href="#DS和-address" class="headerlink" title="DS和[address]"></a>DS和[address]</h4><p>8080CPU中通常用DS寄存器来存放要访问数据的段地址。例如读取10000H单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov bx, 1000H</span><br><span class="line">mov ds, bx</span><br><span class="line">mov al, [0]</span><br></pre></td></tr></table></figure>
+
+<p>上面三条指令将10000H(1000:0)中的数据读到al中。</p>
+<p><code>mov al [0]</code>中“[…]”表示一个内存单元，”[…]”中的0表示内存单元的偏移地址。指令执行时，8086CPU自动取DS寄存器中的数据为内存单元的段地址。</p>
+<p>8086CPU不支持数据直接送入段寄存器操作，DS是一个段寄存器，所以mov ds, 1000H这条指令是非法的。所以只能用一个寄存器进行中转。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/assembly/3-register(Memory)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/2-register(CPU)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/assembly/2-register(CPU)/" class="post-title-link" itemprop="url">汇编语言-寄存器（CPU工作原理）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-15 23:06:20" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:20+08:00">2020-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-01 20:10:00" itemprop="dateModified" datetime="2020-08-01T20:10:00+08:00">2020-08-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="第二章-寄存器（CPU工作原理）"><a href="#第二章-寄存器（CPU工作原理）" class="headerlink" title="第二章 寄存器（CPU工作原理）"></a>第二章 寄存器（CPU工作原理）</h3><p>内部总线实现CPU内部各个器件之间的联系，外部总线实现CPU和主板上其它器件的联系。在CPU中：运算器进行信息处理、寄存器进行信息存储、控制器控制各种器件进行工作、内部总线连接各种器件，在它们之间进行数据传输。</p>
+<p>汇编程序员通过改变各种寄存器中的内容来实现对CPU的控制。</p>
+<p>8086CPU有14个寄存器，分别是：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。</p>
+<h4 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h4><p>8086CPU的所有寄存器都是16位的，可以存放2个字节。AX、BX、CX、DX四个寄存器通常用来存放一般性数据，被称为通用寄存器。为了兼容上一代8位寄存器的CPU，8086CPU的AX、BX、CX、DX都可分为两个独立使用的8位寄存器来用：</p>
+<ul>
+<li>AX可分为AH和AL</li>
+<li>BX可分为BH和BL</li>
+<li>CX可分为CH和CL</li>
+<li>DX可分为DH和DL</li>
+</ul>
+<p>以AX为例，8086CPU的16位寄存器逻辑结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|—————————————————————————————————AX——————————————————————————————————|</span><br><span class="line">| 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |</span><br><span class="line">|____|____|____|____|____|____|___|___|___|___|___|___|___|___|___|___|</span><br><span class="line">|———————————————AH————————————————————|—————————————AL————————————————|</span><br><span class="line">| 7  | 6  | 5  | 4  | 3  |  2 | 1 | 0 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |</span><br><span class="line">|____|____|____|____|____|____|___|___|___|___|___|___|___|___|___|___|</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/assembly/2-register(CPU)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/linux-nc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/linux-nc/" class="post-title-link" itemprop="url">Linux-nc命令详解</a>
         </h2>
 
         <div class="post-meta">
@@ -633,453 +1176,6 @@
 <h4 id="nc常用参数选项"><a href="#nc常用参数选项" class="headerlink" title="nc常用参数选项"></a>nc常用参数选项</h4><p>nc -h查看</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[v1.10-41.1]</span><br><span class="line">connect to somewhere:   nc [-options] hostname port[s] [ports] ... </span><br><span class="line">listen for inbound:     nc -l -p port [-options] [hostname] [port]</span><br><span class="line">options:</span><br><span class="line">        -c shell commands       as &#96;-e&#39;; use &#x2F;bin&#x2F;sh to exec [dangerous!!]</span><br><span class="line">        -e filename             program to exec after connect [dangerous!!]</span><br><span class="line">        -b                      allow broadcasts</span><br><span class="line">        -g gateway              source-routing hop point[s], up to 8</span><br><span class="line">        -G num                  source-routing pointer: 4, 8, 12, ...</span><br><span class="line">        -h                      this cruft</span><br><span class="line">        -i secs                 delay interval for lines sent, ports scanned</span><br><span class="line">        -k                      set keepalive option on socket</span><br><span class="line">        -l                      listen mode, for inbound connects</span><br><span class="line">        -n                      numeric-only IP addresses, no DNS</span><br><span class="line">        -o file                 hex dump of traffic</span><br><span class="line">        -p port                 local port number</span><br><span class="line">        -r                      randomize local and remote ports</span><br><span class="line">        -q secs                 quit after EOF on stdin and delay of secs</span><br><span class="line">        -s addr                 local source address</span><br><span class="line">        -T tos                  set Type Of Service</span><br><span class="line">        -t                      answer TELNET negotiation</span><br><span class="line">        -u                      UDP mode</span><br><span class="line">        -v                      verbose [use twice to be more verbose]</span><br><span class="line">        -w secs                 timeout for connects and final net reads</span><br><span class="line">        -C                      Send CRLF as line-ending</span><br><span class="line">        -z                      zero-I&#x2F;O mode [used for scanning]</span><br><span class="line">port numbers can be individual or ranges: lo-hi [inclusive];</span><br><span class="line">hyphens in port names must be backslash escaped (e.g. &#39;ftp\-data&#39;).</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/5-[bx]-and-loop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/11/5-%5Bbx%5D-and-loop/" class="post-title-link" itemprop="url">汇编语言-[bx]和loop指令</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-11 22:33:57" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:57+08:00">2020-08-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-01 20:50:00" itemprop="dateModified" datetime="2020-08-01T20:50:00+08:00">2020-08-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第五章-bx-和loop指令"><a href="#第五章-bx-和loop指令" class="headerlink" title="第五章 [bx]和loop指令"></a>第五章 [bx]和loop指令</h3><p>[bx]和[0]有些类似，[0]表示内存单元，它的偏移地址是0。要完整的描述一个内存单元，需要两种信息：（1）内存单元的地址；（2）内存单元的长度（类型）。[bx]可以表示一个内存单元，它的偏移地址在bx中，比如以下指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]    # 将一个内存单元的内容送入ax，这个内存单元的长度为2（字单元），存放一个字，偏移地址在bx中，段地址在ds中。</span><br></pre></td></tr></table></figure>
-
-<p>后续课程中：用“()”表示一个寄存器或一个内存单元中的内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(ax)            # 表示ax中的内容</span><br><span class="line">(al)            # 表示al中的内容</span><br><span class="line">(20000H)        # 表示内存20000H单元的内容</span><br><span class="line">((ds)*16+(bx))  # 表示ds中的内容为ADRR1，bx中的内容为ADRR2，ADRR1x16+ADRR2表示内存ADRR1:ADRR2单元的内容</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/11/5-%5Bbx%5D-and-loop/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/4-first-program/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/11/4-first-program/" class="post-title-link" itemprop="url">汇编语言-第一个程序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-11 22:33:44" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:44+08:00">2020-08-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-01 20:30:00" itemprop="dateModified" datetime="2020-08-01T20:30:00+08:00">2020-08-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第四章-第1个程序"><a href="#第四章-第1个程序" class="headerlink" title="第四章 第1个程序"></a>第四章 第1个程序</h3><h4 id="一个源程序从写出到执行的过程"><a href="#一个源程序从写出到执行的过程" class="headerlink" title="一个源程序从写出到执行的过程"></a>一个源程序从写出到执行的过程</h4><p>一个汇编语言程序从写出到最终执行的简要过程如下：</p>
-<ul>
-<li>第一步 编写汇编源程序，这一步工作的结果是产生了一个存储源程序的文本文件</li>
-<li>第二步 对源程序进行编译链接，使用编译程序对源文件编译，产生目标文件；再用连接程序对目标文件进行链接，生成可在操作系统中运行的可执行文件。可执行文件中包含两部分内容<ul>
-<li>程序和数据</li>
-<li>相关的描述信息</li>
-</ul>
-</li>
-<li>第三步 执行可执行文件中的程序</li>
-</ul>
-<h4 id="源程序"><a href="#源程序" class="headerlink" title="源程序"></a>源程序</h4><p>程序4.1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line"></span><br><span class="line">codesg segment</span><br><span class="line"></span><br><span class="line">start: mov ax, 0123H</span><br><span class="line">       mov bx, 0456H</span><br><span class="line">       add ax, bx</span><br><span class="line">       add ax, ax</span><br><span class="line"></span><br><span class="line">       mov ax, 4c00H</span><br><span class="line">       int 21H</span><br><span class="line"></span><br><span class="line">codesg ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/11/4-first-program/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/3-register(Memory)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/11/3-register(Memory)/" class="post-title-link" itemprop="url">汇编语言-寄存器（内存访问）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-11 22:33:32" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:32+08:00">2020-08-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-01 20:20:00" itemprop="dateModified" datetime="2020-08-01T20:20:00+08:00">2020-08-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第三章-寄存器（内存访问）"><a href="#第三章-寄存器（内存访问）" class="headerlink" title="第三章 寄存器（内存访问）"></a>第三章 寄存器（内存访问）</h3><h4 id="内存中字的存储"><a href="#内存中字的存储" class="headerlink" title="内存中字的存储"></a>内存中字的存储</h4><p>CPU中，用16位寄存器来存储一个字。高8位存放高位字节，低8位存放低位字节。在内存中存储时，由于内存单元是字节单元（一个单元存放一个字节），则一个字要用两个地址连续的内存单元存放。这个字的低位字节存放在低地址单元中，高位字节存放在高地址单元中。</p>
-<p>字单元，即存放一个字型数据（16）位。由两个地址连续的内存单元组成。高地址内存单元存放字型数据的高位字节，低地址内存单元中存放字型数据的低位字节。</p>
-<h4 id="DS和-address"><a href="#DS和-address" class="headerlink" title="DS和[address]"></a>DS和[address]</h4><p>8080CPU中通常用DS寄存器来存放要访问数据的段地址。例如读取10000H单元中的内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov bx, 1000H</span><br><span class="line">mov ds, bx</span><br><span class="line">mov al, [0]</span><br></pre></td></tr></table></figure>
-
-<p>上面三条指令将10000H(1000:0)中的数据读到al中。</p>
-<p><code>mov al [0]</code>中“[…]”表示一个内存单元，”[…]”中的0表示内存单元的偏移地址。指令执行时，8086CPU自动取DS寄存器中的数据为内存单元的段地址。</p>
-<p>8086CPU不支持数据直接送入段寄存器操作，DS是一个段寄存器，所以mov ds, 1000H这条指令是非法的。所以只能用一个寄存器进行中转。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/11/3-register(Memory)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/2-register(CPU)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/11/2-register(CPU)/" class="post-title-link" itemprop="url">汇编语言-寄存器（CPU工作原理）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-11 22:33:16" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:16+08:00">2020-08-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-01 20:10:00" itemprop="dateModified" datetime="2020-08-01T20:10:00+08:00">2020-08-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第二章-寄存器（CPU工作原理）"><a href="#第二章-寄存器（CPU工作原理）" class="headerlink" title="第二章 寄存器（CPU工作原理）"></a>第二章 寄存器（CPU工作原理）</h3><p>内部总线实现CPU内部各个器件之间的联系，外部总线实现CPU和主板上其它器件的联系。在CPU中：运算器进行信息处理、寄存器进行信息存储、控制器控制各种器件进行工作、内部总线连接各种器件，在它们之间进行数据传输。</p>
-<p>汇编程序员通过改变各种寄存器中的内容来实现对CPU的控制。</p>
-<p>8086CPU有14个寄存器，分别是：AX、BX、CX、DX、SI、DI、SP、BP、IP、CS、SS、DS、ES、PSW。</p>
-<h4 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h4><p>8086CPU的所有寄存器都是16位的，可以存放2个字节。AX、BX、CX、DX四个寄存器通常用来存放一般性数据，被称为通用寄存器。为了兼容上一代8位寄存器的CPU，8086CPU的AX、BX、CX、DX都可分为两个独立使用的8位寄存器来用：</p>
-<ul>
-<li>AX可分为AH和AL</li>
-<li>BX可分为BH和BL</li>
-<li>CX可分为CH和CL</li>
-<li>DX可分为DH和DL</li>
-</ul>
-<p>以AX为例，8086CPU的16位寄存器逻辑结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|—————————————————————————————————AX——————————————————————————————————|</span><br><span class="line">| 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |</span><br><span class="line">|____|____|____|____|____|____|___|___|___|___|___|___|___|___|___|___|</span><br><span class="line">|———————————————AH————————————————————|—————————————AL————————————————|</span><br><span class="line">| 7  | 6  | 5  | 4  | 3  |  2 | 1 | 0 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |</span><br><span class="line">|____|____|____|____|____|____|___|___|___|___|___|___|___|___|___|___|</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/11/2-register(CPU)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/1-basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="江湖渔民">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="个人博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/11/1-basic/" class="post-title-link" itemprop="url">汇编语言-基础知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-11 22:33:01" itemprop="dateCreated datePublished" datetime="2020-08-11T22:33:01+08:00">2020-08-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-01 20:00:00" itemprop="dateModified" datetime="2020-08-01T20:00:00+08:00">2020-08-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="第一章-基础知识"><a href="#第一章-基础知识" class="headerlink" title="第一章 基础知识"></a>第一章 基础知识</h3><h4 id="机器语言"><a href="#机器语言" class="headerlink" title="机器语言"></a>机器语言</h4><p>机器语言是机器指令的集合。机器指令展开来讲就是一台机器可以正确执行的命令。电子计算机的机器指令是一些列二进制数字。计算机将之转变为一系列高低电平，以使计算机的电子器件受到驱动，进行运算。</p>
-<h4 id="汇编语言的产生"><a href="#汇编语言的产生" class="headerlink" title="汇编语言的产生"></a>汇编语言的产生</h4><p>汇编语言的主体是汇编指令。汇编指令和机器指令的差别在于指令的表示方法上。汇编指令则是机器指令便于记忆的书写格式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">操作：寄存器BX的内容送到AX中</span><br><span class="line">机器指令：1000100111011000</span><br><span class="line">汇编指令：mov ax, bx</span><br></pre></td></tr></table></figure>
-<p>将汇编指令转换成机器指令的翻译程序就被称为编译器。</p>
-<h4 id="汇编语言的组成"><a href="#汇编语言的组成" class="headerlink" title="汇编语言的组成"></a>汇编语言的组成</h4><p>汇编语言由以下3类指令组成：</p>
-<ul>
-<li>汇编指令：机器码的助记符，有对应的机器码</li>
-<li>伪指令：没有对应的机器码，由编译器执行，计算机并不执行</li>
-<li>其他符号：如+、-、*、/等，由编译器识别，没有对应的机器码。<br>汇编语言的核心是机器指令，它决定了汇编语言的特性</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/11/1-basic/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 

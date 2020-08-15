@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第九章 转移指令的原理可以修改IP，或同事修改CS和IP的指令统称为转移指令。概括的讲，转移指令就是可以控制CPU执行内存中某处的代码的指令。 8086 CPU的转移行为有以下几类：  只修改IP时，称为段内转移，比如：jmp ax 同时修改CS和IP时，称为段间转移，比如：jmp 1000:0  由于转移指令对IP修改范围不同，段内转移又分为：短转移和近转移  短转移IP的修改范围为-128~1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言-转移指令的原理">
+<meta property="og:url" content="http://yoursite.com/assembly/9-jmp/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="第九章 转移指令的原理可以修改IP，或同事修改CS和IP的指令统称为转移指令。概括的讲，转移指令就是可以控制CPU执行内存中某处的代码的指令。 8086 CPU的转移行为有以下几类：  只修改IP时，称为段内转移，比如：jmp ax 同时修改CS和IP时，称为段间转移，比如：jmp 1000:0  由于转移指令对IP修改范围不同，段内转移又分为：短转移和近转移  短转移IP的修改范围为-128~1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-15T15:06:21.117Z">
+<meta property="article:modified_time" content="2020-08-15T13:44:00.000Z">
+<meta property="article:author" content="江湖渔民">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/assembly/9-jmp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>汇编语言-转移指令的原理 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/9-jmp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          汇编语言-转移指令的原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-08-15 23:06:21 / Modified: 21:44:00" itemprop="dateCreated datePublished" datetime="2020-08-15T23:06:21+08:00">2020-08-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="第九章-转移指令的原理"><a href="#第九章-转移指令的原理" class="headerlink" title="第九章 转移指令的原理"></a>第九章 转移指令的原理</h3><p>可以修改IP，或同事修改CS和IP的指令统称为转移指令。概括的讲，转移指令就是可以控制CPU执行内存中某处的代码的指令。</p>
+<p>8086 CPU的转移行为有以下几类：</p>
+<ul>
+<li>只修改IP时，称为段内转移，比如：<code>jmp ax</code></li>
+<li>同时修改CS和IP时，称为段间转移，比如：<code>jmp 1000:0</code></li>
+</ul>
+<p>由于转移指令对IP修改范围不同，段内转移又分为：短转移和近转移</p>
+<ul>
+<li>短转移IP的修改范围为-128~127.</li>
+<li>近转移IP的修改范围为-32768~32767.</li>
+</ul>
+<p>8086 CPU的转移指令分为以下几类：</p>
+<ul>
+<li>无条件转移指令（如：jmp）</li>
+<li>条件转移指令</li>
+<li>循环指令（如：loop）</li>
+<li>过程</li>
+<li>中断</li>
+</ul>
+<h4 id="操作符offset"><a href="#操作符offset" class="headerlink" title="操作符offset"></a>操作符offset</h4><p>操作符offset在汇编语言中是由编译器处理的符号，它的功能是取得标号的偏移地址。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax, offset start;   ;相当于mov ax, 0</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov ax, offset s        ;相当于mov ax, 3</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p><code>mov ax, offset start</code>相当于指令<code>mov ax, 0</code>，因为start是代码段中的标号，它所标记的指令是代码段中的第一条指令，偏移地址为0；<code>mov ax, offset s</code>相当于<code>mov ax, 3</code>，因为s是代码段中的标号，它所标记的指令是代码段中的第二条指令，第一条指令的长度为3字节，则s的偏移地址为3</p>
+<h4 id="jmp指令"><a href="#jmp指令" class="headerlink" title="jmp指令"></a>jmp指令</h4><p>jmp为无条件转移指令，可以只修改IP，也可以同时修改CS和IP</p>
+<p>jmp指令要给出两种信息：</p>
+<ul>
+<li>转移的目的地址</li>
+<li>转移的举例（段间转移、段内短转移、段内近转移）</li>
+</ul>
+<p>不同的给出目的地址的方法，和不同的转移位置，对应不同格式的jmp指令。</p>
+<h4 id="依据位移进行转移的jmp指令"><a href="#依据位移进行转移的jmp指令" class="headerlink" title="依据位移进行转移的jmp指令"></a>依据位移进行转移的jmp指令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmp short 标号 ;(转移标号处执行指令)</span><br></pre></td></tr></table></figure>
+
+<p>这种格式的jmp指令实现的是段内短转移，它对IP的修改范围在-128~127，也就是说，它向前转移时可以最多越过128字节，向后转移最多越过127字节。jmp指令中的short符号说明指令进行的是短转移。jmp指令中的标号是代码段中的标号，指明了指令要转移的目的地，转移指令结束后，CS:IP应该指向标号处的指令。</p>
+<p><code>jmp short 标号</code>指令对应的机器码中，并不包含转移的目的地址，而包含的是转移的位移。这个位移，是编译器根据汇编指令中的标号计算出来的。</p>
+<p>实际上，指令<code>jmp short 标号</code>的功能为：<code>(IP)=(IP)+8位位移</code></p>
+<ul>
+<li>8位位移 = 标号处的地址-jmp指令后的第一个字节的地址</li>
+<li>short指明此处的位移为8位位移</li>
+<li>8位位移的范围为-128~127，用补码表示</li>
+<li>8位位移由编译程序在编译时算出</li>
+</ul>
+<p>还有一种指令与<code>jmp short 标号</code>类似：<code>jmp near ptr标号</code>，它实现的是段内近转移，只不过是16位的位移长度</p>
+<h4 id="转移的目的地址在指令中的jmp指令"><a href="#转移的目的地址在指令中的jmp指令" class="headerlink" title="转移的目的地址在指令中的jmp指令"></a>转移的目的地址在指令中的jmp指令</h4><p><code>jmp far ptr 标号</code>实现的是段间转移，又称为远转移，功能如下：</p>
+<ul>
+<li>(CS)=标号所在段的段地址；(IP)=标号在段中的偏移地址</li>
+<li>far ptr指令用标号的段地址和偏移地址修改CS:IP</li>
+</ul>
+<h4 id="转移地址在寄存器中的jmp指令"><a href="#转移地址在寄存器中的jmp指令" class="headerlink" title="转移地址在寄存器中的jmp指令"></a>转移地址在寄存器中的jmp指令</h4><p>指令格式：jmp 16位寄存器<br>功能：(IP)=(16位寄存器)</p>
+<h4 id="转移地址在内存中的jmp指令"><a href="#转移地址在内存中的jmp指令" class="headerlink" title="转移地址在内存中的jmp指令"></a>转移地址在内存中的jmp指令</h4><p>转移地址在内存中的jmp指令有两种格式：</p>
+<ul>
+<li>jmp word ptr 内存单元地址(段内转移)；功能：从内存单元地址处开始存放着一个字，是转移的目的偏移地址</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 0123H</span><br><span class="line">mov ds:[0], ax</span><br><span class="line">jmp word ptr ds:[0]</span><br><span class="line">;或者</span><br><span class="line">mov ax, 0123H</span><br><span class="line">mov [bx], ax</span><br><span class="line">jmp word ptr [bx]</span><br></pre></td></tr></table></figure>
+
+<p>执行后：(IP)=0123H</p>
+<ul>
+<li>jmp dword ptr 内存单元地址(段间转移)；功能：从内存单元地址处开始存放着两个字，高地址处的字是转移的目的段地址，低地址处是转移的目的偏移地址</li>
+<li>(CS)=(内存单元+2)；(IP)=(内存单元地址)</li>
+</ul>
+<p>内存单元地址可用寻址方式的任一格式给出，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 0123H</span><br><span class="line">mov ds:[0], ax</span><br><span class="line">mov word ptr ds:[2], 0</span><br><span class="line">jmp dword ptr ds:[0]</span><br><span class="line">;或者</span><br><span class="line">mov ax, 0123H</span><br><span class="line">mov [bx], ax</span><br><span class="line">mov word ptr [bx+2], 0</span><br><span class="line">jmp dword ptr [bx]</span><br></pre></td></tr></table></figure>
+
+<p>执行后，(CS)=0, (IP)=123H，CS:IP指向0000:0123</p>
+<h4 id="jczx指令"><a href="#jczx指令" class="headerlink" title="jczx指令"></a>jczx指令</h4><p>jcxz指令为有条件转移指令，所有的有条件转移指令都是短转移，在对应的机器码中包含转移的位移，而不是目的地址。对IP的修改范围都为：-128~127</p>
+<p>指令格式：jcxz 标号 （如果(cx)=0，转移到标号处执行）；<br>操作：当(cx)=0时，(IP)=(IP)+8位位移。</p>
+<ul>
+<li>8位位移=标号处的地址-jcxz指令后的第一个字节的地址；</li>
+<li>8位位移的范围为-128~127，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出</li>
+</ul>
+<p>当(cx)!=0时，什么也不做（程序向下执行）</p>
+<p><code>jcxz 标号</code> 功能相当于 <code>if((cx)==0) jmp short 标号</code>;</p>
+<h4 id="loop指令"><a href="#loop指令" class="headerlink" title="loop指令"></a>loop指令</h4><p>loop指令为循环指令，所有的循环指令都是短转移，在对应的机器码中包含转移的位移，而不是目的地址。对应IP的修改范围都为-128~127</p>
+<p>指令格式：loop 标号（(cx)=(cx)-1,如果(cx)!=0，转移到标号处执行）；<br>操作：(cx)=(cx-1)；如果(cx)!=0，(IP)=(IP)+8位位移。</p>
+<ul>
+<li>8位位移=标号处的地址-loop指令后的第一个字节的地址；</li>
+<li>8位位移的范围为-128~127，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出</li>
+</ul>
+<p>当(cx)!=0时，什么也不做（程序向下执行）</p>
+<p><code>jcxz 标号</code> 功能相当于 <code>(cx)--; if((cx)!=0) jmp short 标号</code>;</p>
+<h4 id="根据位移进行转移的意义"><a href="#根据位移进行转移的意义" class="headerlink" title="根据位移进行转移的意义"></a>根据位移进行转移的意义</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jmp short 标号</span><br><span class="line">jmp near ptr 标号</span><br><span class="line">jcxz 标号</span><br><span class="line">loop 标号</span><br></pre></td></tr></table></figure>
+
+<p>它们对IP的修改是根据转移目的地址和转移起始地址之间的位移来进行的。在它们对应的机器码中不包含转移的目的地址，而包含的是到目的地址的位移。这种设计，方便了程序段在内存中的浮动装配。</p>
+<h4 id="编译器对转移位移超界的检测"><a href="#编译器对转移位移超界的检测" class="headerlink" title="编译器对转移位移超界的检测"></a>编译器对转移位移超界的检测</h4><p>根据位移进行转移的指令，转移范围受到转移位移的限制。如果程序转移范围超界的问题，编译时，编译器将报错。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/assembly/8-two-question-about-data-handle/" rel="prev" title="汇编语言-数据处理的两个基本问题">
+      <i class="fa fa-chevron-left"></i> 汇编语言-数据处理的两个基本问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/assembly/1-basic/" rel="next" title="汇编语言-基础知识">
+      汇编语言-基础知识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第九章-转移指令的原理"><span class="nav-number">1.</span> <span class="nav-text">第九章 转移指令的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#操作符offset"><span class="nav-number">1.1.</span> <span class="nav-text">操作符offset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jmp指令"><span class="nav-number">1.2.</span> <span class="nav-text">jmp指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依据位移进行转移的jmp指令"><span class="nav-number">1.3.</span> <span class="nav-text">依据位移进行转移的jmp指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转移的目的地址在指令中的jmp指令"><span class="nav-number">1.4.</span> <span class="nav-text">转移的目的地址在指令中的jmp指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转移地址在寄存器中的jmp指令"><span class="nav-number">1.5.</span> <span class="nav-text">转移地址在寄存器中的jmp指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转移地址在内存中的jmp指令"><span class="nav-number">1.6.</span> <span class="nav-text">转移地址在内存中的jmp指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jczx指令"><span class="nav-number">1.7.</span> <span class="nav-text">jczx指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loop指令"><span class="nav-number">1.8.</span> <span class="nav-text">loop指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据位移进行转移的意义"><span class="nav-number">1.9.</span> <span class="nav-text">根据位移进行转移的意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译器对转移位移超界的检测"><span class="nav-number">1.10.</span> <span class="nav-text">编译器对转移位移超界的检测</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">江湖渔民</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/code2old" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;code2old" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1814593561@qq.com" title="E-Mail → mailto:1814593561@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江湖渔民</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
