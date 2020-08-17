@@ -16,7 +16,7 @@ timezone: ''          # 网站时区，用于生成页面时填充相关时间�
 ## 如果你的站点要放入子目录, 请将url设置为'http://yoursite.com/child' 并将根目录设置为'/child/'
 url: http://yoursite.com                    # 站点网址
 root: /                                     # 网站根目录
-permalink: :title/    # 文单的永久链接格式
+permalink: :year/:month/:day/:title/    # 文单的永久链接格式
 # permalink: :year/:month/:day/:title/    # 文单的永久链接格式
 permalink_defaults:                         # 永久链接中各部分的默认值
 pretty_urls:

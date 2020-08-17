@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第十章 call和ret指令call和ret指令都是转移指令，它们都修改IP，或同时修改CS和IP。它们经常被共同用来实现子程序的设计。 ret和retfret指令用栈中的数据，修改IP的内容，从而实现近转移retf指令用栈中的数据，修改CS和IP的内容，从而实现远转移  CPU执行ret指令时，进行下面两步操作：  (IP)&#x3D;((SS)*16+(SP)) (SP)&#x3D;(SP)+2  CPU执行re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言-call和ret指令">
+<meta property="og:url" content="http://yoursite.com/assembly/10-call-and-ret/index.html">
+<meta property="og:site_name" content="个人博客">
+<meta property="og:description" content="第十章 call和ret指令call和ret指令都是转移指令，它们都修改IP，或同时修改CS和IP。它们经常被共同用来实现子程序的设计。 ret和retfret指令用栈中的数据，修改IP的内容，从而实现近转移retf指令用栈中的数据，修改CS和IP的内容，从而实现远转移  CPU执行ret指令时，进行下面两步操作：  (IP)&#x3D;((SS)*16+(SP)) (SP)&#x3D;(SP)+2  CPU执行re">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-17T15:32:10.855Z">
+<meta property="article:modified_time" content="2020-08-17T13:44:00.000Z">
+<meta property="article:author" content="江湖渔民">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/assembly/10-call-and-ret/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>汇编语言-call和ret指令 | 个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/assembly/10-call-and-ret/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="江湖渔民">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          汇编语言-call和ret指令
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-08-17 23:32:10 / Modified: 21:44:00" itemprop="dateCreated datePublished" datetime="2020-08-17T23:32:10+08:00">2020-08-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">汇编语言学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="第十章-call和ret指令"><a href="#第十章-call和ret指令" class="headerlink" title="第十章 call和ret指令"></a>第十章 call和ret指令</h3><p>call和ret指令都是转移指令，它们都修改IP，或同时修改CS和IP。它们经常被共同用来实现子程序的设计。</p>
+<h4 id="ret和retf"><a href="#ret和retf" class="headerlink" title="ret和retf"></a>ret和retf</h4><p>ret指令用栈中的数据，修改IP的内容，从而实现近转移<br>retf指令用栈中的数据，修改CS和IP的内容，从而实现远转移 </p>
+<p>CPU执行ret指令时，进行下面两步操作：</p>
+<ul>
+<li>(IP)=((SS)*16+(SP))</li>
+<li>(SP)=(SP)+2</li>
+</ul>
+<p>CPU执行retf指令时，进行下面四步操作：</p>
+<ul>
+<li>(IP)=((SS)*16+(SP))</li>
+<li>(SP)=(SP)+2</li>
+<li>(CS)=((SS)*16+(SP))</li>
+<li>(SP)=(SP)+2</li>
+</ul>
+<p>可以看出，如果用汇编语法来解释ret和retf指令，则：<br>CPU执行ret指令时，相当于执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pop IP</span><br></pre></td></tr></table></figure>
+
+<p>CPU执行retf指令时，相当于执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pop IP</span><br><span class="line">pop CS</span><br></pre></td></tr></table></figure>
+
+<p>下面的程序中，ret指令执行后，(IP)=0,CS:IP执行代码段的第一条指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">stack segment</span><br><span class="line">    db 16 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">    mov ax, stack</span><br><span class="line">    mov ss, ax</span><br><span class="line">    mov sp, 16</span><br><span class="line">    mov ax, 0</span><br><span class="line">    push ax</span><br><span class="line">    mov bx, 0</span><br><span class="line">    ret</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>下面的程序中，retf指令执行后，CS:IP指向代码段的第一条指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">stack segment</span><br><span class="line">    db 16 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">    mov ax, stack</span><br><span class="line">    mov ss, ax</span><br><span class="line">    mov sp, 16</span><br><span class="line"></span><br><span class="line">    mov ax, 0</span><br><span class="line">    push cs</span><br><span class="line">    push ax</span><br><span class="line">    mov bx, 0</span><br><span class="line">    retf</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="call指令"><a href="#call指令" class="headerlink" title="call指令"></a>call指令</h4><p>CPU执行call指令时，进行两步操作：</p>
+<ul>
+<li>将当前的IP或CS和IP压入栈中</li>
+<li>转移</li>
+</ul>
+<p>call指令不能实现短转移，除此之外，call指令实现转移的方法和jmp指令的原理相同</p>
+<h4 id="依据位移进行转移的call指令"><a href="#依据位移进行转移的call指令" class="headerlink" title="依据位移进行转移的call指令"></a>依据位移进行转移的call指令</h4><p>call 标号(将当前的IP压栈后，转到标号处执行指令)</p>
+<p>CPU执行此种格式的call指令时，进行如下操作：</p>
+<ul>
+<li>(SP)=(SP)-2<br>((SS)*16+(SP))=(IP)</li>
+<li>(IP)=(IP)+16位位移</li>
+</ul>
+<p>16位位移=“标号”处的地址-call指令后的第一字节的地址<br>16位位移的范围为-32768~32767，用补码表示<br>16位位移的编译程序在编译时算出</p>
+<p>如果用汇编语法解释此种格式的call指令，则相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push IP</span><br><span class="line">jmp near ptr 标号</span><br></pre></td></tr></table></figure>
+
+<h4 id="转移的目的地址在指令中的call指令"><a href="#转移的目的地址在指令中的call指令" class="headerlink" title="转移的目的地址在指令中的call指令"></a>转移的目的地址在指令中的call指令</h4><p>指令<code>call far ptr标号</code>实现的是段间转移，此种call指令操作如下：</p>
+<ul>
+<li>(SP)=(SP)-2<br>((SS)<em>16+(SP))=(CS)<br>(SP)=(SP)-2<br>((SS)</em>16+(SP))=(IP)</li>
+<li>(CS)=标号所在段的段地址<br>(IP)=标号所在段中的偏移地址</li>
+</ul>
+<p>如果用汇编语法解释此种格式的call指令，则相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">push CS</span><br><span class="line">push IP</span><br><span class="line">jmp far ptr 标号</span><br></pre></td></tr></table></figure>
+
+<h4 id="转移地址的寄存器中的call指令"><a href="#转移地址的寄存器中的call指令" class="headerlink" title="转移地址的寄存器中的call指令"></a>转移地址的寄存器中的call指令</h4><p>指令格式：<code>call 16为寄存器</code><br>功能：</p>
+<p>(SP)=(SP)-2<br>((SS)*16+(SP))=(IP)<br>(IP)=(16位寄存器)</p>
+<p>如果用汇编语法解释此种格式的call指令，则相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push IP</span><br><span class="line">jmp 16位寄存器</span><br></pre></td></tr></table></figure>
+
+<h4 id="转移指令在内存中的call指令"><a href="#转移指令在内存中的call指令" class="headerlink" title="转移指令在内存中的call指令"></a>转移指令在内存中的call指令</h4><p>转移地址在内存中的call指令有两种格式：<br>格式一</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call word ptr 内存单元地址</span><br></pre></td></tr></table></figure>
+
+<p>如果用汇编语法解释此种格式的call指令，则相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push IP</span><br><span class="line">jmp word ptr 内存单元地址</span><br></pre></td></tr></table></figure>
+
+<p>比如下面的指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mov sp, 10h</span><br><span class="line">mov ax, 0123h</span><br><span class="line">mov ds[0], ax</span><br><span class="line">call word ptr ds:[0]</span><br></pre></td></tr></table></figure>
+<p>执行后，(IP)=0123, (SP)=0EH</p>
+<p>格式二</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call dword ptr 内存单元地址</span><br></pre></td></tr></table></figure>
+
+<p>如果用汇编语法解释此种格式的call指令，则相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">push CS</span><br><span class="line">push IP</span><br><span class="line">jmp dword ptr 内存单元地址</span><br></pre></td></tr></table></figure>
+
+<p>比如下面的指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov sp, 10h</span><br><span class="line">mov ax, 0123h</span><br><span class="line">mov ds:[0], ax</span><br><span class="line">mov word ptr ds:[2], 0</span><br><span class="line">call dword ptr ds:[0]</span><br></pre></td></tr></table></figure>
+<p>执行后，(CS)=0，(IP)=0123H，(SP)=0CH</p>
+<h4 id="call和ret配合使用"><a href="#call和ret配合使用" class="headerlink" title="call和ret配合使用"></a>call和ret配合使用</h4><p>下面程序返回前，bx中的值是多少</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax, 1</span><br><span class="line">    mov cx, 3</span><br><span class="line">    call s</span><br><span class="line">    mov bx, ax  ;(bx)&#x3D;?</span><br><span class="line">    mov ax, 4c00h</span><br><span class="line">    int 21h</span><br><span class="line">s:</span><br><span class="line">    add ax, ax</span><br><span class="line">    loop s</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h4 id="mul指令"><a href="#mul指令" class="headerlink" title="mul指令"></a>mul指令</h4><p>mul是乘法指令，使用mul做乘法的时候：</p>
+<ul>
+<li>两个想乘的数，要么都是8位，要是都是16位。如果是8位，一个默认放在AH中，另一个放在8位寄存器或内存单元中；如果是16位，一个默认在AX中，另一个放在16位寄存器或内存单元中</li>
+<li>结果：如果是8位乘法，结果默认放在AX中；如果是16位乘法，结果高位默认在DX中，低位在AX中</li>
+</ul>
+<p>格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mul reg</span><br><span class="line">mul 内存单元</span><br></pre></td></tr></table></figure>
+
+<h4 id="模块化程序设计"><a href="#模块化程序设计" class="headerlink" title="模块化程序设计"></a>模块化程序设计</h4><p>call和ret指令共同支持了汇编语言中的模块化设计。</p>
+<h4 id="参数和结果传递的问题"><a href="#参数和结果传递的问题" class="headerlink" title="参数和结果传递的问题"></a>参数和结果传递的问题</h4><p>讨论参数和返回值传递的问题，实际上是探讨如何存储子程序需要的参数和产生的返回值。用寄存器来存储参数和结果是最常使用的方法，对于存放参数和存放结果的寄存器，调用者和子程序的读写操作恰恰相反：调用者将参数送入参数寄存器，从结果寄存器中取得返回值；子程序从参数寄存器中取得参数，将返回值送入结果寄存器</p>
+<h4 id="批量数据的传递"><a href="#批量数据的传递" class="headerlink" title="批量数据的传递"></a>批量数据的传递</h4><p>批量传参和结果时，可以将批量数据存放到内存中，然后将它们所在内存空间的首地址放在寄存器中，传递给需要的子程序。对于具有批量数据的返回结果，也可用同样的方法。</p>
+<h4 id="寄存器冲突问题"><a href="#寄存器冲突问题" class="headerlink" title="寄存器冲突问题"></a>寄存器冲突问题</h4><p>在子程序的开始将子程序中所有用到的寄存器中的内容保持起来，在子程序返回前再回复。可以用栈来保持寄存器的内容。</p>
+<p>所以编写子程序的标志框架如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">子程序开始:</span><br><span class="line">    子程序中使用的寄存器入栈</span><br><span class="line">    子程序内容</span><br><span class="line">    子程序中使用的寄存器出栈</span><br><span class="line">    返回(ret&#x2F;retf)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/linux-nc/" rel="prev" title="Linux-nc命令详解">
+      <i class="fa fa-chevron-left"></i> Linux-nc命令详解
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第十章-call和ret指令"><span class="nav-number">1.</span> <span class="nav-text">第十章 call和ret指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ret和retf"><span class="nav-number">1.1.</span> <span class="nav-text">ret和retf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#call指令"><span class="nav-number">1.2.</span> <span class="nav-text">call指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依据位移进行转移的call指令"><span class="nav-number">1.3.</span> <span class="nav-text">依据位移进行转移的call指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转移的目的地址在指令中的call指令"><span class="nav-number">1.4.</span> <span class="nav-text">转移的目的地址在指令中的call指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转移地址的寄存器中的call指令"><span class="nav-number">1.5.</span> <span class="nav-text">转移地址的寄存器中的call指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转移指令在内存中的call指令"><span class="nav-number">1.6.</span> <span class="nav-text">转移指令在内存中的call指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#call和ret配合使用"><span class="nav-number">1.7.</span> <span class="nav-text">call和ret配合使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mul指令"><span class="nav-number">1.8.</span> <span class="nav-text">mul指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块化程序设计"><span class="nav-number">1.9.</span> <span class="nav-text">模块化程序设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数和结果传递的问题"><span class="nav-number">1.10.</span> <span class="nav-text">参数和结果传递的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量数据的传递"><span class="nav-number">1.11.</span> <span class="nav-text">批量数据的传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#寄存器冲突问题"><span class="nav-number">1.12.</span> <span class="nav-text">寄存器冲突问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">江湖渔民</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/code2old" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;code2old" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1814593561@qq.com" title="E-Mail → mailto:1814593561@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江湖渔民</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
